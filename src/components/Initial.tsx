@@ -1,0 +1,35 @@
+import React, { useState } from 'react'
+import { CaretCircleDoubleRight } from 'phosphor-react'
+
+const Initial = () => {
+
+  const [Mouse, setMouse] = useState(false)
+
+  const ButtonEventClass = 'flex items-center gap-4'
+  const ButtonClass = 'p-2 w-full justify-center mx-auto rounded-md text-4xl font-bold text-slate-200 hover:bg-orange-500'
+
+
+  return (
+    <div className='p-4 bg-gradient-to-tr from-slate-600 to-gray-900 rounded-lg flex flex-col gap-8'>
+      <h1 className='font-bold text-5xl bg-gradient-to-r bg-clip-text text-transparent from-yellow-300  to-red-700'>Confronto RPG</h1>
+
+      <main className='flex flex-col justify-center gap-4'>
+
+        <button
+          onMouseEnter={() => setMouse(true)}
+          onMouseOut={() => setMouse(false)}
+          className={`${ButtonClass} ${!Mouse && ButtonEventClass}`}>{!Mouse && <CaretCircleDoubleRight className='text-orange-500' />}
+          Jogar</button>
+
+        <button
+          onMouseEnter={() => setMouse(!true)}
+          onMouseOut={() => setMouse(!false)}
+          className={`${ButtonClass} ${Mouse && ButtonEventClass}`}>{Mouse && <CaretCircleDoubleRight className='text-orange-500' />}
+          Opções</button>
+
+      </main>
+    </div>
+  )
+}
+
+export default Initial
