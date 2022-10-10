@@ -4,7 +4,7 @@ function atack3() { }
 function atack4() { }
 
 
-const Bolsonaro = {
+export const Bolsonaro = {
   name: 'Bolsonaro',
   hability1: atack1,
   hability2: atack2,
@@ -12,4 +12,10 @@ const Bolsonaro = {
   hability4: atack4,
 }
 
-export default Bolsonaro
+export const StatsBolsonaro = () =>{
+  function Teste(props: any){
+    console.log(props)
+  }
+
+  return {Teste}
+}

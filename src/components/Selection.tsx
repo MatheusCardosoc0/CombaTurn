@@ -4,7 +4,7 @@ import Lula from './Heros/Lula'
 
 const Selection = () => {
 
-  const { Heros, setShow, setPlayer, Player, Enemy, setEnemy } = useStateContext()
+  const { Heros, setShow, setPlayer, setEnemy } = useStateContext()
 
   function getRandomArbitrary(min: number, max: number) {
     min = Math.ceil(min);

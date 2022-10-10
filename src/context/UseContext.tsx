@@ -42,8 +42,8 @@ const Initial = {
     hability3: () => { },
     hability4: () => { },
   },
-  setEnemy: (player: Hero) => {},
-  setPlayer: (player: Hero) => {}
+  setEnemy: (player: Hero) => { },
+  setPlayer: (player: Hero) => { }
 }
 
 
@@ -55,14 +55,27 @@ export const UseContextProvider = ({ children }: userContextprops) => {
   const [Player, setPlayer] = useState<Hero>(Initial.Player)
   const [Heros, setHeros] = useState<Hero[]>([])
   const [Enemy, setEnemy] = useState<Hero>(Initial.Enemy)
-  const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Game')
+  const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Initial')
+
+  const Bolsonaro = {
+    name: 'Bolsonaro',
+    hability1: atack1,
+    hability2: atack2,
+    hability3: atack3,
+    hability4: atack4,
+  }
+
+  function atack1() { console.log('eae') }
+  function atack2() { }
+  function atack3() { }
+  function atack4() { }
 
 
 
   return (
     <UserContext.Provider value={
       {
-        Player, Enemy, setEnemy, setPlayer, show, setShow, Heros, setHeros
+        Player, setPlayer, Enemy, setEnemy, show, setShow, Heros, setHeros
       }
     }>
       {children}
