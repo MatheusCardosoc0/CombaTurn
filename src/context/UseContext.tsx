@@ -55,7 +55,7 @@ export const UseContextProvider = ({ children }: userContextprops) => {
   const [Player, setPlayer] = useState<Hero>(Initial.Player)
   const [Heros, setHeros] = useState<Hero[]>([])
   const [Enemy, setEnemy] = useState<Hero>(Initial.Enemy)
-  const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Initial')
+  const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Game')
 
 
 

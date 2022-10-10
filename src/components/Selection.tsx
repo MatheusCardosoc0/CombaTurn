@@ -7,33 +7,25 @@ const Selection = () => {
   const { Heros, setShow, setPlayer, Player, Enemy, setEnemy } = useStateContext()
 
   function getRandomArbitrary(min: number, max: number) {
-    return Math.random() * (max - min) + min;
-}
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min)
+  }
 
-  useEffect(() => {
-
-    const ChangeEnemy = Heros.find(
-      hero => hero !== Player
-    )
-
-    if (ChangeEnemy) {
-      const updatedCartItems = Heros.map(cartProduct => {
-        if (cartProduct !== Player) setEnemy(cartProduct)
-          
-          
-      })
-      
-    }
-
-      
-    
-  },[Player])
-
-  function PushHeroOnPlayerAndShowGame(value: Hero){
+  function PushHeroOnPlayerAndShowGame(value: Hero) {
     setPlayer(value)
+
+    const newCartItems = Heros.filter(item => item.name !== value.name)
+
+
+    setEnemy(newCartItems[getRandomArbitrary(0, newCartItems.length)])
+
+
     setShow('Game')
   }
   
+
+
   return (
     <div className='h-screen w-full items-center flex justify-center flex-col bg-gradient-to-r from-gray-900 via-blue-500 to-gray-900'>
       <section className='bg-slate-300 px-8 py-6 rounded-lg drop-shadow-[-16px_12px_2px_rgba(45,16,16,30.35)]'>
