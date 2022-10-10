@@ -4,7 +4,7 @@ type userContextprops = {
   children: ReactNode
 }
 
-type Hero = {
+export type Hero = {
   name: string
   hability1: () => void
   hability2: () => void

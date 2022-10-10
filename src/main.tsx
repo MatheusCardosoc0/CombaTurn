@@ -6,6 +6,8 @@ import './styles/main.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <UseContextProvider>
+    <React.StrictMode>
       <App />
+    </React.StrictMode>
   </UseContextProvider>
 )

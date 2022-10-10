@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import { CaretCircleDoubleRight } from 'phosphor-react'
 import { useStateContext } from '../context/UseContext'
+import Lula from './Heros/Lula'
+import Bolsonaro from './Heros/Bolsonaro'
 
 const Initial = () => {
 
   const [Mouse, setMouse] = useState(false)
-  const {setShow} = useStateContext()
+  const {setShow, Heros,setHeros} = useStateContext()
 
   const ButtonEventClass = 'flex items-center gap-4'
   const ButtonClass = 'p-2 w-full justify-center mx-auto rounded-md text-4xl font-bold text-slate-200 hover:bg-orange-500'
+
+  function PushHerosAndSelectionPage(){
+    setShow('Selection')
+    setHeros([...Heros, Lula, Bolsonaro])
+  }
 
 
   return (
@@ -21,7 +28,7 @@ const Initial = () => {
           onMouseEnter={() => setMouse(true)}
           onMouseOut={() => setMouse(false)}
           className={`${ButtonClass} ${!Mouse && ButtonEventClass}`}
-          onClick={() => setShow('Selection')}>
+          onClick={() => PushHerosAndSelectionPage()}>
             {!Mouse && <CaretCircleDoubleRight className='text-orange-500' />}
           Jogar</button>
 
