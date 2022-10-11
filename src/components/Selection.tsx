@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react'
 import { Hero, useStateContext } from '../context/UseContext'
-import Lula from './Heros/Lula'
+
+export function getRandomArbitrary(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min)
+}
 
 const Selection = () => {
 
   const { Heros, setShow, setPlayer, setEnemy } = useStateContext()
 
-  function getRandomArbitrary(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min)
-  }
+  
 
   function PushHeroOnPlayerAndShowGame(value: Hero) {
     setPlayer(value)

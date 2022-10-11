@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { CaretCircleDoubleRight } from 'phosphor-react'
 import { useStateContext } from '../context/UseContext'
-import Lula from './Heros/Lula'
 import {Bolsonaro} from './Heros/Bolsonaro'
+import { Lula } from './Heros/Lula'
 
 const Initial = () => {
 

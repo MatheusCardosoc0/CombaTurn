@@ -6,10 +6,11 @@ type userContextprops = {
 
 export type Hero = {
   name: string
-  hability1: () => void
-  hability2: () => void
-  hability3: () => void
-  hability4: () => void
+  life: number
+  habilityName1: string
+  habilityName2: string
+  habilityName3: string
+  habilityName4: string
 }
 
 type InitialValue = {
@@ -30,17 +31,19 @@ const Initial = {
   setShow: '',
   Player: {
     name: '',
-    hability1: () => { },
-    hability2: () => { },
-    hability3: () => { },
-    hability4: () => { },
+    life: 0,
+    habilityName1: '',
+    habilityName2: '',
+    habilityName3: '',
+    habilityName4: '',
   },
   Enemy: {
     name: '',
-    hability1: () => { },
-    hability2: () => { },
-    hability3: () => { },
-    hability4: () => { },
+    life: 0,
+    habilityName1: '',
+    habilityName2: '',
+    habilityName3: '',
+    habilityName4: '',
   },
   setEnemy: (player: Hero) => { },
   setPlayer: (player: Hero) => { }
@@ -56,19 +59,6 @@ export const UseContextProvider = ({ children }: userContextprops) => {
   const [Heros, setHeros] = useState<Hero[]>([])
   const [Enemy, setEnemy] = useState<Hero>(Initial.Enemy)
   const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Initial')
-
-  const Bolsonaro = {
-    name: 'Bolsonaro',
-    hability1: atack1,
-    hability2: atack2,
-    hability3: atack3,
-    hability4: atack4,
-  }
-
-  function atack1() { console.log('eae') }
-  function atack2() { }
-  function atack3() { }
-  function atack4() { }
 
 
 

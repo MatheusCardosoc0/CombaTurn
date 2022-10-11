@@ -1,13 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useStateContext } from '../context/UseContext'
-import { StatsBolsonaro } from './Heros/Bolsonaro'
+import SelectorHabilitiesEnemy from './functions/SelectorHabilitesEnemy'
+import SelectorHabilitiesPlayer from './functions/SelectorHabilitiesPlayer'
+import { getRandomArbitrary } from './Selection'
 
 const Game = () => {
 
 
   const [turn, setTurn] = useState(1)
-  const { Player, Enemy } = useStateContext()
-  const {Teste} = StatsBolsonaro()
+  const { Player, Enemy, setPlayer, setEnemy } = useStateContext()
+
+  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setPlayer)
+  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setEnemy)
+
+  useEffect(() => {
+    if(turn % 2 == 0){
+      setTimeout(() => {
+        EnemyInteligense()
+      }, 1000);
+    }
+    else{
+      return
+    }
+  },[turn])
+
+  function EnemyInteligense(){
+    const random = getRandomArbitrary(1, 4)
+
+    if(random === 1){
+      DispatchHabilitiesEnemy()?.hability1()
+    }
+    else if(random === 2){
+      DispatchHabilitiesEnemy()?.hability2()
+    }
+    else if(random === 3){
+      DispatchHabilitiesEnemy()?.hability3()
+    }
+    else if(random === 4){
+      DispatchHabilitiesEnemy()?.hability4()
+    }
+
+  }
+
 
   return (
     <div className='h-screen w-full bg-gradient-to-r from-slate-100 to-zinc-100'>
@@ -20,11 +54,13 @@ const Game = () => {
         <section>
           <div className='flex flex-col bg-blue-500'>
             <h4>{Player.name}</h4>
+            <span>{Player.life}</span>
             <div className='flex flex-col'>
-              <button onClick={() =>  Teste(Player)}>Atack1</button>
-              <button onClick={Player.hability2}>Atack2</button>
-              <button onClick={Player.hability3}>Atack3</button>
-              <button onClick={Player.hability4}>Atack4</button>
+              <button disabled={turn % 2 == 0} onClick={() => DispatchHabilitiesPlayer()?.hability1()}
+              >{Player.habilityName1}</button>
+              <button onClick={() => DispatchHabilitiesPlayer()?.hability2()} disabled={turn % 2 == 0}>{Player.habilityName2}</button>
+              <button onClick={() => DispatchHabilitiesPlayer()?.hability3()} disabled={turn % 2 == 0}>{Player.habilityName3}</button>
+              <button onClick={() => DispatchHabilitiesPlayer()?.hability4()} disabled={turn % 2 == 0}>{Player.habilityName4}</button>
             </div>
           </div>
         </section>
@@ -32,11 +68,12 @@ const Game = () => {
         <section>
           <div className='flex flex-col bg-blue-500'>
             <h4>{Enemy.name}</h4>
+            <span>{Enemy.life}</span>
             <div className='flex flex-col'>
-              <button onClick={Enemy.hability1}>Atack1</button>
-              <button onClick={Enemy.hability2}>Atack2</button>
-              <button onClick={Enemy.hability3}>Atack3</button>
-              <button onClick={Enemy.hability4}>Atack4</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability1()}disabled >{Enemy.habilityName1}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability2()}disabled >{Enemy.habilityName2}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability3()}disabled >{Enemy.habilityName3}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability4()}disabled >{Enemy.habilityName4}</button>
             </div>
           </div>
         </section>
