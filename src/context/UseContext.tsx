@@ -7,10 +7,15 @@ type userContextprops = {
 export type Hero = {
   name: string
   life: number
+  energy: number
   habilityName1: string
+  habilityCost1: number
   habilityName2: string
+  habilityCost2: number
   habilityName3: string
+  habilityCost3: number
   habilityName4: string
+  habilityCost4: number
 }
 
 type InitialValue = {
@@ -32,18 +37,28 @@ const Initial = {
   Player: {
     name: '',
     life: 0,
+    energy: 0,
     habilityName1: '',
+    habilityCost1: 0,
     habilityName2: '',
+    habilityCost2: 0,
     habilityName3: '',
+    habilityCost3: 0,
     habilityName4: '',
+    habilityCost4: 0,
   },
   Enemy: {
     name: '',
     life: 0,
+    energy: 0,
     habilityName1: '',
+    habilityCost1: 0,
     habilityName2: '',
+    habilityCost2: 0,
     habilityName3: '',
+    habilityCost3: 0,
     habilityName4: '',
+    habilityCost4: 0,
   },
   setEnemy: (player: Hero) => { },
   setPlayer: (player: Hero) => { }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useStateContext } from '../context/UseContext'
+import { Hero, useStateContext } from '../context/UseContext'
 import SelectorHabilitiesEnemy from './functions/SelectorHabilitesEnemy'
 import SelectorHabilitiesPlayer from './functions/SelectorHabilitiesPlayer'
 import { getRandomArbitrary } from './Selection'
@@ -10,43 +10,69 @@ const Game = () => {
   const [turn, setTurn] = useState(1)
   const [lifePointsPlayer, setLifePointsPlayer] = useState(0)
   const [lifePointsEnemy, setLifePointsEnemy] = useState(0)
+  const [EnergyPointsPlayer, setEnergyPointsPlayer] = useState(0)
+  const [EnergyPointsEnemy, setEnergyPointsEnemy] = useState(0)
   const { Player, Enemy, setPlayer, setEnemy } = useStateContext()
 
-  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn)
-  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn)
+  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer)
+  
+  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy)
 
   useEffect(() => {
-    if(turn % 2 == 0){
+    if (turn % 2 == 0) {
       setTimeout(() => {
         EnemyInteligense()
       }, 1000);
     }
-    else{
+    else {
       return
     }
-  },[turn])
+    if((EnergyPointsPlayer + 2) > Player.energy){
+      setEnergyPointsPlayer(Player.energy)
+    } else{
+      setEnergyPointsPlayer((prevEnergy: number) => prevEnergy + 2)
+    }
+    if((EnergyPointsEnemy + 2) > Enemy.energy){
+      setEnergyPointsEnemy(Enemy.energy)
+    } else{
+      setEnergyPointsEnemy((prevEnergy: number) => prevEnergy + 2)
+    }
+    
+  }, [turn])
 
   useEffect(() => {
     setLifePointsPlayer(Player.life)
     setLifePointsEnemy(Enemy.life)
-  },[])
+    setEnergyPointsPlayer(Player.energy)
+    setEnergyPointsEnemy(Enemy.energy)
+  }, [])
 
-  function EnemyInteligense(){
-    const random = getRandomArbitrary(1, 4)
+  function EnemyInteligense() {
+    const ArrayCost = new Array()
+    ArrayCost.push(Enemy.habilityCost1, Enemy.habilityCost2, Enemy.habilityCost3, Enemy.habilityCost4)
+    console.log(ArrayCost)
 
-    if(random === 1){
+
+    const random = getRandomArbitrary(1, 5)
+
+    if (random === 1) {
       DispatchHabilitiesEnemy()?.hability1()
     }
-    else if(random === 2){
+    else if (random === 2) {
       DispatchHabilitiesEnemy()?.hability2()
     }
-    else if(random === 3){
+    else if (random === 3) {
       DispatchHabilitiesEnemy()?.hability3()
     }
-    else if(random === 4){
+    else if (random === 4) {
       DispatchHabilitiesEnemy()?.hability4()
     }
 
+  }
+
+  function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero){
+    setTurn((prevTurn: number) => prevTurn + 1)
+    setEnergy((prevEnergy: number) => prevEnergy + (Master.energy / 2).toFixed())
   }
 
 
@@ -62,12 +88,14 @@ const Game = () => {
           <div className='flex flex-col bg-blue-500'>
             <h4>{Player.name}</h4>
             <span>{lifePointsPlayer.toFixed()}</span>
+            <span>{EnergyPointsPlayer}</span>
             <div className='flex flex-col'>
               <button disabled={turn % 2 == 0} onClick={() => DispatchHabilitiesPlayer()?.hability1()}
               >{Player.habilityName1}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability2()} disabled={turn % 2 == 0}>{Player.habilityName2}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability3()} disabled={turn % 2 == 0}>{Player.habilityName3}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability4()} disabled={turn % 2 == 0}>{Player.habilityName4}</button>
+              <button onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player)} >Passar</button>
             </div>
           </div>
         </section>
@@ -76,11 +104,12 @@ const Game = () => {
           <div className='flex flex-col bg-blue-500'>
             <h4>{Enemy.name}</h4>
             <span>{lifePointsEnemy.toFixed()}</span>
+            <span>{EnergyPointsEnemy}</span>
             <div className='flex flex-col'>
-              <button onClick={() => DispatchHabilitiesEnemy()?.hability1()}disabled >{Enemy.habilityName1}</button>
-              <button onClick={() => DispatchHabilitiesEnemy()?.hability2()}disabled >{Enemy.habilityName2}</button>
-              <button onClick={() => DispatchHabilitiesEnemy()?.hability3()}disabled >{Enemy.habilityName3}</button>
-              <button onClick={() => DispatchHabilitiesEnemy()?.hability4()}disabled >{Enemy.habilityName4}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability1()} disabled >{Enemy.habilityName1}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability2()} disabled >{Enemy.habilityName2}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability3()} disabled >{Enemy.habilityName3}</button>
+              <button onClick={() => DispatchHabilitiesEnemy()?.hability4()} disabled >{Enemy.habilityName4}</button>
             </div>
           </div>
         </section>

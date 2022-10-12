@@ -2,10 +2,10 @@ import { Hero } from '../../context/UseContext'
 import { StatsBolsonaro } from '../Heros/Bolsonaro'
 import { StatsLula } from '../Heros/Lula'
 
-const SelectorHabilitiesEnemy = (Master: Hero, Turn: any, LifePointsMy: any, LifePointsEnemy: any, turnCurrent: number) => {
+const SelectorHabilitiesEnemy = (Master: Hero, Turn: any, LifePointsMy: any, LifePointsEnemy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number) => {
 
-  const {HabiltiesBolso} = StatsBolsonaro(LifePointsEnemy, Turn, LifePointsMy)
-  const {HabiltiesLula} = StatsLula(LifePointsEnemy, Turn, LifePointsMy, turnCurrent )
+  const {HabiltiesBolso} = StatsBolsonaro(LifePointsEnemy, Turn, LifePointsMy,  setMyEnergy, MyEnergy)
+  const {HabiltiesLula} = StatsLula(LifePointsEnemy, Turn, LifePointsMy, turnCurrent,  setMyEnergy, MyEnergy )
 
 
   function DispatchHabilitiesEnemy(){

@@ -16,10 +16,10 @@ const Selection = () => {
   function PushHeroOnPlayerAndShowGame(value: Hero) {
     setPlayer(value)
 
-    const newCartItems = Heros.filter(item => item.name !== value.name)
+    const Enemyes = Heros.filter(item => item.name !== value.name)
 
 
-    setEnemy(newCartItems[getRandomArbitrary(0, newCartItems.length)])
+    setEnemy(Enemyes[getRandomArbitrary(0, Enemyes.length)])
 
 
     setShow('Game')

@@ -1,38 +1,38 @@
 import { useEffect, useState } from "react"
-import { incTurn } from "../functions/ModElements"
+import ModElements from "../functions/ModElements"
 
 
 export const Lula = {
   name: 'Lula',
   life: 350,
+  energy: 12,
   habilityName1: 'Cachacinha',
+  habilityCost1: 3,
   habilityName2: 'Roubo',
+  habilityCost2: 6,
   habilityName3: 'O mais Honesto',
+  habilityCost3: 2,
   habilityName4: 'Aumentar imposto',
+  habilityCost4: 3,
 }
 
-export const StatsLula = (LifePointsEnemy: any, setTurn: any, LifePointsMy: any, turnCurrent: number) =>{
+export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number) =>{
 
-  const [Poder, setPoder] = useState(0)
+  const [Corrupção, setCorrupção] = useState(0)
   const [impost, setImpost] = useState(0)
   const [impostCharged, setImpostCharged] = useState(false)
+  const {incTurn} = ModElements()
 
 
-  function Atack1(){
-    LifePointsMy((life: number) => life + 50 + Poder) 
-    incTurn(setTurn)
-  }
-
-  function Atack2(){ 
-    incTurn(setTurn, 1)
-    /*if(impostCharged){
-      LifePointsEnemy((life: number) => life - impost)
-    }*/
-  }
-
-  function Atack3(){ 
-    setPoder((poder: number) => poder + 20)
-    incTurn(setTurn)
+  function readjustmentEnergy(value: number){
+    if(MyEnergy < value){
+      alert(`Essa habilidade exige ${value} de energia para ser executada`)
+      return false
+    } else {
+      setMyEnergy((prevEnergy: number) => prevEnergy - value)
+      incTurn(SetTurn)
+      return true
+    }
   }
 
   useEffect(() => {
@@ -42,17 +42,36 @@ export const StatsLula = (LifePointsEnemy: any, setTurn: any, LifePointsMy: any,
     }
   },[turnCurrent])
 
+
+  function Atack1(){
+    if(readjustmentEnergy(Lula.habilityCost1)){
+      LifePointsMy((life: number) => life + 50 + Corrupção) 
+    }
+  }
+
+  function Atack2(){ 
+    if(readjustmentEnergy(Lula.habilityCost2)){
+      incTurn(SetTurn) 
+    }
+  }
+
+  function Atack3(){
+    if(readjustmentEnergy(Lula.habilityCost3)){
+      setCorrupção((Corrupção: number) => Corrupção + 20) 
+    }
+  }
+
   function Atack4(){
-    if(!impostCharged){
-      setImpost((prevImpost : number) => prevImpost + 40)
-      setImpostCharged(true)
-    }
-    else{
-      setImpost((prevImpost : number) => prevImpost + (Poder / 3))
-      setPoder((poder: number) => poder + 10)
-    }
-    
-    incTurn(setTurn)
+    if(readjustmentEnergy(Lula.habilityCost4)){
+      if(!impostCharged){
+        setImpost((prevImpost : number) => prevImpost + 40)
+        setImpostCharged(true)
+      }
+      else{
+        setImpost((prevImpost : number) => prevImpost + (Corrupção / 3))
+        setCorrupção((Corrupção: number) => Corrupção + 10)
+      } 
+    } 
   }
 
 
