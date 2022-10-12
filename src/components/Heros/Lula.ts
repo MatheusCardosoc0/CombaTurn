@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { incTurn } from "../functions/ModElements"
 
 
@@ -10,32 +11,57 @@ export const Lula = {
   habilityName4: 'Aumentar imposto',
 }
 
-export const StatsLula = (props: any, turn: any, setMaster: any) =>{
-  function atack1(){
-    console.log('Lula1')
-    incTurn(turn)
+export const StatsLula = (LifePointsEnemy: any, setTurn: any, LifePointsMy: any, turnCurrent: number) =>{
+
+  const [Poder, setPoder] = useState(0)
+  const [impost, setImpost] = useState(0)
+  const [impostCharged, setImpostCharged] = useState(false)
+
+
+  function Atack1(){
+    LifePointsMy((life: number) => life + 50 + Poder) 
+    incTurn(setTurn)
   }
 
-  function atack2(){
-    console.log('Lula2')
-    incTurn(turn)
+  function Atack2(){ 
+    incTurn(setTurn, 1)
+    /*if(impostCharged){
+      LifePointsEnemy((life: number) => life - impost)
+    }*/
   }
-  function atack3(){
-    console.log('Lula3')
-    incTurn(turn)
+
+  function Atack3(){ 
+    setPoder((poder: number) => poder + 20)
+    incTurn(setTurn)
   }
-  function atack4(){
-    console.log('Lula4')
-    incTurn(turn)
+
+  useEffect(() => {
+    //precisa saber se o player joga primeiro ou não
+    if(turnCurrent % 2 != 0 && impostCharged == true){
+      LifePointsEnemy((life: number) => life - impost)
+    }
+  },[turnCurrent])
+
+  function Atack4(){
+    if(!impostCharged){
+      setImpost((prevImpost : number) => prevImpost + 40)
+      setImpostCharged(true)
+    }
+    else{
+      setImpost((prevImpost : number) => prevImpost + (Poder / 3))
+      setPoder((poder: number) => poder + 10)
+    }
+    
+    incTurn(setTurn)
   }
 
 
 
   const HabiltiesLula = {
-    hability1: atack1,
-    hability2: atack2,
-    hability3: atack3,
-    hability4: atack4,
+    hability1: Atack1,
+    hability2: Atack2,
+    hability3: Atack3,
+    hability4: Atack4,
   }
 
   return {HabiltiesLula}

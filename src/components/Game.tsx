@@ -8,10 +8,12 @@ const Game = () => {
 
 
   const [turn, setTurn] = useState(1)
+  const [lifePointsPlayer, setLifePointsPlayer] = useState(0)
+  const [lifePointsEnemy, setLifePointsEnemy] = useState(0)
   const { Player, Enemy, setPlayer, setEnemy } = useStateContext()
 
-  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setPlayer)
-  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setEnemy)
+  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn)
+  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn)
 
   useEffect(() => {
     if(turn % 2 == 0){
@@ -23,6 +25,11 @@ const Game = () => {
       return
     }
   },[turn])
+
+  useEffect(() => {
+    setLifePointsPlayer(Player.life)
+    setLifePointsEnemy(Enemy.life)
+  },[])
 
   function EnemyInteligense(){
     const random = getRandomArbitrary(1, 4)
@@ -54,7 +61,7 @@ const Game = () => {
         <section>
           <div className='flex flex-col bg-blue-500'>
             <h4>{Player.name}</h4>
-            <span>{Player.life}</span>
+            <span>{lifePointsPlayer.toFixed()}</span>
             <div className='flex flex-col'>
               <button disabled={turn % 2 == 0} onClick={() => DispatchHabilitiesPlayer()?.hability1()}
               >{Player.habilityName1}</button>
@@ -68,7 +75,7 @@ const Game = () => {
         <section>
           <div className='flex flex-col bg-blue-500'>
             <h4>{Enemy.name}</h4>
-            <span>{Enemy.life}</span>
+            <span>{lifePointsEnemy.toFixed()}</span>
             <div className='flex flex-col'>
               <button onClick={() => DispatchHabilitiesEnemy()?.hability1()}disabled >{Enemy.habilityName1}</button>
               <button onClick={() => DispatchHabilitiesEnemy()?.hability2()}disabled >{Enemy.habilityName2}</button>
