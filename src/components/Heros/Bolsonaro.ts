@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Hero } from "../../context/UseContext"
-import ModElements from "../functions/ModElements"
+import ModElements, { incTurn } from "../functions/ModElements"
 import { getRandomArbitrary } from "../Selection"
 
 
@@ -23,7 +23,6 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
   const [EnemyWeakening, setEmemyWeakening] = useState(1)
   const [atletic, setAtletic] = useState(false)
   const [countBoosted, setCountBoosted] = useState(0)
-  const {incTurn} = ModElements()
 
   const valueBoosted = countBoosted * 10
 
@@ -38,7 +37,7 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
   }
   
 
-  const Damage4 = valueBoosted * getRandomArbitrary(1,3)
+  const Damage4 = (valueBoosted / 2) * getRandomArbitrary(1,3)
 
   const DamageAtack4 = Damage4 + Damage4 + Damage4
 

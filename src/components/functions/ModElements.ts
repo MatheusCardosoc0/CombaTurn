@@ -1,12 +1,13 @@
 import React from 'react'
 
+export function incTurn(turn: any, increment: number = 0){
+  return turn((prevInc: number) => prevInc + 1 + increment)
+}
+
 const ModElements = () => {
 
-  function incTurn(turn: any, increment: number = 0){
-    return turn((prevInc: number) => prevInc + 1 + increment)
-  }
 
-  return {incTurn}
+  return 
 }
 
 export default ModElements

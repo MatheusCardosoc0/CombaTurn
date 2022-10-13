@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import ModElements from "../functions/ModElements"
+import { incTurn } from "../functions/ModElements"
 
 
 export const Lula = {
@@ -21,7 +21,6 @@ export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,
   const [Corrupção, setCorrupção] = useState(0)
   const [impost, setImpost] = useState(0)
   const [impostCharged, setImpostCharged] = useState(false)
-  const {incTurn} = ModElements()
 
 
   function readjustmentEnergy(value: number){

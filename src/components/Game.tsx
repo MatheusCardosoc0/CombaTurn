@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Hero, useStateContext } from '../context/UseContext'
+import { incTurn } from './functions/ModElements'
 import SelectorHabilitiesEnemy from './functions/SelectorHabilitesEnemy'
 import SelectorHabilitiesPlayer from './functions/SelectorHabilitiesPlayer'
 import { getRandomArbitrary } from './Selection'
@@ -30,12 +31,12 @@ const Game = () => {
     if((EnergyPointsPlayer + 2) > Player.energy){
       setEnergyPointsPlayer(Player.energy)
     } else{
-      setEnergyPointsPlayer((prevEnergy: number) => prevEnergy + 2)
+      setEnergyPointsPlayer((prevEnergy: number) => prevEnergy + 1)
     }
     if((EnergyPointsEnemy + 2) > Enemy.energy){
       setEnergyPointsEnemy(Enemy.energy)
     } else{
-      setEnergyPointsEnemy((prevEnergy: number) => prevEnergy + 2)
+      setEnergyPointsEnemy((prevEnergy: number) => prevEnergy + 1)
     }
     
   }, [turn])
@@ -47,33 +48,47 @@ const Game = () => {
     setEnergyPointsEnemy(Enemy.energy)
   }, [])
 
+
+  function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number){
+    incTurn(setTurn)
+    if((energyCurrent + (Master.energy / 2)) > Master.energy){
+      setEnergy(Master.energy)
+    } else{
+      setEnergy((prevEnergy: number) => prevEnergy + (Master.energy / 2))
+    }
+  }
+
   function EnemyInteligense() {
     const ArrayCost = new Array()
     ArrayCost.push(Enemy.habilityCost1, Enemy.habilityCost2, Enemy.habilityCost3, Enemy.habilityCost4)
     console.log(ArrayCost)
+    const NewArrayCost = ArrayCost.filter(hability => hability < EnergyPointsEnemy)
+    console.log(NewArrayCost)
 
+    const random = getRandomArbitrary(0, NewArrayCost.length)
 
-    const random = getRandomArbitrary(1, 5)
+    if(EnergyPointsEnemy < (Enemy.energy / 3)){
+      RecargeEnergyAndPassTurn(setEnergyPointsEnemy, Enemy, EnergyPointsEnemy)
+    }
 
-    if (random === 1) {
+    else if (NewArrayCost[random] === Enemy.habilityCost1) {
       DispatchHabilitiesEnemy()?.hability1()
     }
-    else if (random === 2) {
+    else if (NewArrayCost[random] === Enemy.habilityCost2) {
       DispatchHabilitiesEnemy()?.hability2()
     }
-    else if (random === 3) {
+    else if (NewArrayCost[random] === Enemy.habilityCost3) {
       DispatchHabilitiesEnemy()?.hability3()
     }
-    else if (random === 4) {
+    else if (NewArrayCost[random] === Enemy.habilityCost4) {
       DispatchHabilitiesEnemy()?.hability4()
+    } else{
+      RecargeEnergyAndPassTurn(setEnergyPointsEnemy, Enemy, EnergyPointsEnemy)
     }
 
   }
 
-  function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero){
-    setTurn((prevTurn: number) => prevTurn + 1)
-    setEnergy((prevEnergy: number) => prevEnergy + (Master.energy / 2).toFixed())
-  }
+  
 
 
   return (
@@ -88,14 +103,14 @@ const Game = () => {
           <div className='flex flex-col bg-blue-500'>
             <h4>{Player.name}</h4>
             <span>{lifePointsPlayer.toFixed()}</span>
-            <span>{EnergyPointsPlayer}</span>
+            <span>{EnergyPointsPlayer.toFixed()}</span>
             <div className='flex flex-col'>
               <button disabled={turn % 2 == 0} onClick={() => DispatchHabilitiesPlayer()?.hability1()}
               >{Player.habilityName1}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability2()} disabled={turn % 2 == 0}>{Player.habilityName2}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability3()} disabled={turn % 2 == 0}>{Player.habilityName3}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability4()} disabled={turn % 2 == 0}>{Player.habilityName4}</button>
-              <button onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player)} >Passar</button>
+              <button onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)} >Passar</button>
             </div>
           </div>
         </section>
@@ -104,7 +119,7 @@ const Game = () => {
           <div className='flex flex-col bg-blue-500'>
             <h4>{Enemy.name}</h4>
             <span>{lifePointsEnemy.toFixed()}</span>
-            <span>{EnergyPointsEnemy}</span>
+            <span>{EnergyPointsEnemy.toFixed()}</span>
             <div className='flex flex-col'>
               <button onClick={() => DispatchHabilitiesEnemy()?.hability1()} disabled >{Enemy.habilityName1}</button>
               <button onClick={() => DispatchHabilitiesEnemy()?.hability2()} disabled >{Enemy.habilityName2}</button>
