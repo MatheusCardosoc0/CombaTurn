@@ -9,18 +9,20 @@ const Game = () => {
 
 
   const [turn, setTurn] = useState(1)
-  const [lifePointsPlayer, setLifePointsPlayer] = useState(0)
-  const [lifePointsEnemy, setLifePointsEnemy] = useState(0)
+  const [lifePointsPlayer, setLifePointsPlayer] = useState(1)
+  const [lifePointsEnemy, setLifePointsEnemy] = useState(1)
   const [EnergyPointsPlayer, setEnergyPointsPlayer] = useState(0)
   const [EnergyPointsEnemy, setEnergyPointsEnemy] = useState(0)
   const { Player, Enemy, setPlayer, setEnemy } = useStateContext()
+  const [Winer, setWiner] = useState(false)
+  const [nameWiner, setNameWiner] = useState('')
 
   const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer)
-  
+
   const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy)
 
   useEffect(() => {
-    if (turn % 2 == 0) {
+    if (turn % 2 == 0 && lifePointsEnemy >= 0) {
       setTimeout(() => {
         EnemyInteligense()
       }, 1000);
@@ -28,18 +30,31 @@ const Game = () => {
     else {
       return
     }
-    if((EnergyPointsPlayer + 2) > Player.energy){
+
+
+    if ((EnergyPointsPlayer + 2) > Player.energy) {
       setEnergyPointsPlayer(Player.energy)
-    } else{
+    } else {
       setEnergyPointsPlayer((prevEnergy: number) => prevEnergy + 1)
     }
-    if((EnergyPointsEnemy + 2) > Enemy.energy){
+    if ((EnergyPointsEnemy + 2) > Enemy.energy) {
       setEnergyPointsEnemy(Enemy.energy)
-    } else{
+    } else {
       setEnergyPointsEnemy((prevEnergy: number) => prevEnergy + 1)
     }
-    
+
   }, [turn])
+
+  useEffect(() => {
+    if (lifePointsPlayer <= 0) {
+      setWiner(true)
+      setNameWiner(Enemy.name)
+    }
+    if (lifePointsEnemy <= 0) {
+      setWiner(true)
+      setNameWiner(Player.name)
+    }
+  }, [lifePointsEnemy, lifePointsPlayer])
 
   useEffect(() => {
     setLifePointsPlayer(Player.life)
@@ -49,11 +64,11 @@ const Game = () => {
   }, [])
 
 
-  function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number){
+  function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number) {
     incTurn(setTurn)
-    if((energyCurrent + (Master.energy / 2)) > Master.energy){
+    if ((energyCurrent + (Master.energy / 2)) > Master.energy) {
       setEnergy(Master.energy)
-    } else{
+    } else {
       setEnergy((prevEnergy: number) => prevEnergy + (Master.energy / 2))
     }
   }
@@ -67,7 +82,7 @@ const Game = () => {
 
     const random = getRandomArbitrary(0, NewArrayCost.length)
 
-    if(EnergyPointsEnemy < (Enemy.energy / 3)){
+    if (EnergyPointsEnemy < (Enemy.energy / 3)) {
       RecargeEnergyAndPassTurn(setEnergyPointsEnemy, Enemy, EnergyPointsEnemy)
     }
 
@@ -82,13 +97,13 @@ const Game = () => {
     }
     else if (NewArrayCost[random] === Enemy.habilityCost4) {
       DispatchHabilitiesEnemy()?.hability4()
-    } else{
+    } else {
       RecargeEnergyAndPassTurn(setEnergyPointsEnemy, Enemy, EnergyPointsEnemy)
     }
 
   }
 
-  
+
 
 
   return (
@@ -100,23 +115,28 @@ const Game = () => {
       </div>
       <main className='flex justify-between pt-[10rem]'>
         <section>
-          <div className='flex flex-col bg-blue-500'>
-            <h4>{Player.name}</h4>
-            <span>{lifePointsPlayer.toFixed()}</span>
-            <span>{EnergyPointsPlayer.toFixed()}</span>
-            <div className='flex flex-col'>
+          <div className='flex flex-col bg-blue-500 p-2 rounded-r-2xl'>
+            <div className='flex gap-10'>
+              <h4 className='text-white text-3xl font-bold'>{Player.name}</h4>
+              <div className='flex flex-col'>
+                <span>{lifePointsPlayer.toFixed()}</span>
+                <span>{EnergyPointsPlayer.toFixed()}</span>
+              </div>
+            </div>
+            <div className='grid grid-cols-2'>
               <button disabled={turn % 2 == 0} onClick={() => DispatchHabilitiesPlayer()?.hability1()}
               >{Player.habilityName1}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability2()} disabled={turn % 2 == 0}>{Player.habilityName2}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability3()} disabled={turn % 2 == 0}>{Player.habilityName3}</button>
               <button onClick={() => DispatchHabilitiesPlayer()?.hability4()} disabled={turn % 2 == 0}>{Player.habilityName4}</button>
-              <button onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)} >Passar</button>
+              <button onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
+                disabled={turn % 2 == 0} >Passar</button>
             </div>
           </div>
         </section>
 
         <section>
-          <div className='flex flex-col bg-blue-500'>
+          <div className='flex flex-col bg-red-500'>
             <h4>{Enemy.name}</h4>
             <span>{lifePointsEnemy.toFixed()}</span>
             <span>{EnergyPointsEnemy.toFixed()}</span>
@@ -129,6 +149,15 @@ const Game = () => {
           </div>
         </section>
       </main>
+      {Winer &&
+        <span className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>
+          {nameWiner == Player.name ?
+            <h2 className='text-5xl font-bold items-center flex justify-center text--500 span'
+            >Parabéns, {nameWiner} venceu!</h2> :
+            <h2 className='text-5xl font-bold items-center flex justify-center text-red-500 span'
+            >Você perdeu, {nameWiner} venceu!</h2>}
+        </span>
+      }
     </div>
   )
 }

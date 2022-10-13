@@ -36,7 +36,7 @@ const Initial = {
   setShow: '',
   Player: {
     name: '',
-    life: 0,
+    life: 1,
     energy: 0,
     habilityName1: '',
     habilityCost1: 0,
@@ -49,7 +49,7 @@ const Initial = {
   },
   Enemy: {
     name: '',
-    life: 0,
+    life: 1,
     energy: 0,
     habilityName1: '',
     habilityCost1: 0,

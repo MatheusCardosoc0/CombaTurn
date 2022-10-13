@@ -4,7 +4,7 @@ import { incTurn } from "../functions/ModElements"
 
 export const Lula = {
   name: 'Lula',
-  life: 350,
+  life: 10,
   energy: 12,
   habilityName1: 'Cachacinha',
   habilityCost1: 3,

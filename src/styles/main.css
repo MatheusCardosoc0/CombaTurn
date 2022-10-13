@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.span{
+   animation: shadow infinite ease-in-out 3s;
+
+}
+
+@keyframes shadow {
+  10%{text-shadow: -4px 4px 1px rgba(0,0,0,30.35)}
+  70%{text-shadow: 4px 4px 1px rgba(0,0,0,30.35)}
+  100%{text-shadow: 5px 5px 1px rgba(0,0,0,30.35)} 
+ }
