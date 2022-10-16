@@ -4,18 +4,20 @@ type userContextprops = {
   children: ReactNode
 }
 
+export type HeroHability = {
+  name: string
+  cost: number
+  types: string
+}
+
 export type Hero = {
   name: string
   life: number
   energy: number
-  habilityName1: string
-  habilityCost1: number
-  habilityName2: string
-  habilityCost2: number
-  habilityName3: string
-  habilityCost3: number
-  habilityName4: string
-  habilityCost4: number
+  hability1: HeroHability
+  hability2: HeroHability
+  hability3: HeroHability
+  hability4: HeroHability
 }
 
 type InitialValue = {
@@ -25,8 +27,8 @@ type InitialValue = {
   setShow: any
   Player: Hero
   Enemy: Hero
-  setEnemy: (player: Hero) => void
-  setPlayer: (player: Hero) => void
+  setEnemy: any
+  setPlayer: any
 }
 
 const Initial = {
@@ -38,27 +40,19 @@ const Initial = {
     name: '',
     life: 1,
     energy: 0,
-    habilityName1: '',
-    habilityCost1: 0,
-    habilityName2: '',
-    habilityCost2: 0,
-    habilityName3: '',
-    habilityCost3: 0,
-    habilityName4: '',
-    habilityCost4: 0,
+    hability1: {name: '', cost: 0, types: ''},
+    hability2: {name: '', cost: 0, types: ''},
+    hability3: {name: '', cost: 0, types: ''},
+    hability4: {name: '', cost: 0, types: ''},
   },
   Enemy: {
     name: '',
     life: 1,
     energy: 0,
-    habilityName1: '',
-    habilityCost1: 0,
-    habilityName2: '',
-    habilityCost2: 0,
-    habilityName3: '',
-    habilityCost3: 0,
-    habilityName4: '',
-    habilityCost4: 0,
+    hability1: {name: '', cost: 0, types: ''},
+    hability2: {name: '', cost: 0, types: ''},
+    hability3: {name: '', cost: 0, types: ''},
+    hability4: {name: '', cost: 0, types: ''},
   },
   setEnemy: (player: Hero) => { },
   setPlayer: (player: Hero) => { }

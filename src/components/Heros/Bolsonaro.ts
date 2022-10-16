@@ -8,14 +8,10 @@ export const Bolsonaro = {
   name: 'Bolsonaro',
   life: 300,
   energy: 15,
-  habilityName1: 'Cloroquina',
-  habilityCost1: 3,
-  habilityName2: 'Historico de atleta',
-  habilityCost2: 2,
-  habilityName3: 'Imbrochavel',
-  habilityCost3: 5,
-  habilityName4: 'Porte de armas',
-  habilityCost4: 8,
+  hability1: {name :'Cloroquina' , cost: 3, types: 'suport'},
+  hability2:  {name :'Historico de atleta' , cost: 3, types: 'heal'},
+  hability3:  {name :'Imbrochavel' , cost: 5, types: 'damage'}, 
+  hability4:  {name :'Porte de armas' , cost: 8, types: 'damage'}
 }
 
 export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, setMyEnergy: any, MyEnergy: number) =>{
@@ -60,25 +56,25 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
   
 
   function atack1(){   
-    if(readjustmentEnergy(Bolsonaro.habilityCost1)){
+    if(readjustmentEnergy(Bolsonaro.hability1.cost)){
       setEmemyWeakening((inc : number) => inc + 0.3)
     }    
   }
 
   function atack2(){
-    if(readjustmentEnergy(Bolsonaro.habilityCost2)){
+    if(readjustmentEnergy(Bolsonaro.hability2.cost)){
       LifePointsMy((life: number) => life + 150 + valueBoosted)
       setAtletic(true)
     }
     
   }
   function atack3(){
-    if(readjustmentEnergy(Bolsonaro.habilityCost3)){
+    if(readjustmentEnergy(Bolsonaro.hability3.cost)){
       LifePointsEnemy((life: number) => life - 60 * EnemyWeakening)
     }
   }
   function atack4(){
-    if(readjustmentEnergy(Bolsonaro.habilityCost4)){
+    if(readjustmentEnergy(Bolsonaro.hability4.cost)){
       LifePointsEnemy((life: number) => life - DamageAtack4 * EnemyWeakening)
     }
     

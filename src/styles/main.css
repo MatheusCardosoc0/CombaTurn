@@ -5,7 +5,10 @@
 
 .span{
    animation: shadow infinite ease-in-out 3s;
+}
 
+.textShadow{
+   text-shadow: -1px 1px 1px rgba(0,0,0,30.35);
 }
 
 @keyframes shadow {

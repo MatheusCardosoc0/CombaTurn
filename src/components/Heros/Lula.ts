@@ -6,14 +6,10 @@ export const Lula = {
   name: 'Lula',
   life: 10,
   energy: 12,
-  habilityName1: 'Cachacinha',
-  habilityCost1: 3,
-  habilityName2: 'Roubo',
-  habilityCost2: 6,
-  habilityName3: 'O mais Honesto',
-  habilityCost3: 2,
-  habilityName4: 'Aumentar imposto',
-  habilityCost4: 3,
+  hability1: {name :'cachacinha' , cost: 3, types: 'heal'},
+  hability2:  {name :'Roubo' , cost: 5, types: 'heal'},
+  hability3:  {name :'Honestidade' , cost: 2, types: 'suport'}, 
+  hability4:  {name :'Aumentar imposto' , cost: 2, types: 'damage'}
 }
 
 export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number) =>{
@@ -43,25 +39,25 @@ export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,
 
 
   function Atack1(){
-    if(readjustmentEnergy(Lula.habilityCost1)){
+    if(readjustmentEnergy(Lula.hability1.cost)){
       LifePointsMy((life: number) => life + 50 + Corrupção) 
     }
   }
 
   function Atack2(){ 
-    if(readjustmentEnergy(Lula.habilityCost2)){
+    if(readjustmentEnergy(Lula.hability2.cost)){
       incTurn(SetTurn) 
     }
   }
 
   function Atack3(){
-    if(readjustmentEnergy(Lula.habilityCost3)){
+    if(readjustmentEnergy(Lula.hability3.cost)){
       setCorrupção((Corrupção: number) => Corrupção + 20) 
     }
   }
 
   function Atack4(){
-    if(readjustmentEnergy(Lula.habilityCost4)){
+    if(readjustmentEnergy(Lula.hability4.cost)){
       if(!impostCharged){
         setImpost((prevImpost : number) => prevImpost + 40)
         setImpostCharged(true)
