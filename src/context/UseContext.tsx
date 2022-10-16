@@ -29,11 +29,15 @@ type InitialValue = {
   Enemy: Hero
   setEnemy: any
   setPlayer: any
+  MyTurn: number
+  setMyTurn: any
 }
 
 const Initial = {
   Heros: [],
   setHeros: '',
+  MyTurn: 0,
+  setMyTurn: '',
   show: 'Initial' || 'Selection' || 'Game',
   setShow: '',
   Player: {
@@ -68,13 +72,14 @@ export const UseContextProvider = ({ children }: userContextprops) => {
   const [Heros, setHeros] = useState<Hero[]>([])
   const [Enemy, setEnemy] = useState<Hero>(Initial.Enemy)
   const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Initial')
+  const [MyTurn, setMyTurn] = useState(Initial.MyTurn)
 
 
 
   return (
     <UserContext.Provider value={
       {
-        Player, setPlayer, Enemy, setEnemy, show, setShow, Heros, setHeros
+        Player, setPlayer, Enemy, setEnemy, show, setShow, Heros, setHeros, MyTurn, setMyTurn
       }
     }>
       {children}

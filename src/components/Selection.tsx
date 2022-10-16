@@ -9,22 +9,41 @@ export function getRandomArbitrary(min: number, max: number) {
 
 const Selection = () => {
 
-  const { Heros, setShow, setPlayer, setEnemy } = useStateContext()
-
-  
+  const { Heros, setShow, setPlayer, setEnemy, setMyTurn, MyTurn } = useStateContext()
 
   function PushHeroOnPlayerAndShowGame(value: Hero) {
-    setPlayer(value)
+    setMyTurn(getRandomArbitrary(1, 3))
 
-    const Enemyes = Heros.filter(item => item.name !== value.name)
+    setTimeout(() => {
+      setPlayer(value)
+
+      const Enemyes = Heros.filter(item => item.name !== value.name)
 
 
-    setEnemy(Enemyes[getRandomArbitrary(0, Enemyes.length)])
+      setEnemy(Enemyes[getRandomArbitrary(0, Enemyes.length)])
 
 
-    setShow('Game')
+      setShow('Game')
+    }, 2000);
   }
-  
+
+  function whoStarts(){
+    if(MyTurn === 1){
+      return(
+        <div>
+          O inimigo começa
+        </div>
+      )
+    }
+    if(MyTurn === 2){
+      return(
+        <div>
+          Você começa
+        </div>
+      )
+    }
+  }
+
 
 
   return (
@@ -44,6 +63,7 @@ const Selection = () => {
           })}
         </div>
       </section>
+      {MyTurn != 0 && whoStarts()}
     </div>
   )
 }

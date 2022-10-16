@@ -5,17 +5,18 @@ import SelectorHabilitiesEnemy from './functions/SelectorHabilitesEnemy'
 import SelectorHabilitiesPlayer from './functions/SelectorHabilitiesPlayer'
 import { getRandomArbitrary } from './Selection'
 import Button from './utils/Button'
+import LayautButtons from './utils/LayautButtons'
 import LayautHero from './utils/LayautHero'
 
 const Game = () => {
 
 
-  const [turn, setTurn] = useState(1)
+  const [turn, setTurn] = useState(0)
   const [lifePointsPlayer, setLifePointsPlayer] = useState(1)
   const [lifePointsEnemy, setLifePointsEnemy] = useState(1)
   const [EnergyPointsPlayer, setEnergyPointsPlayer] = useState(0)
   const [EnergyPointsEnemy, setEnergyPointsEnemy] = useState(0)
-  const { Player, Enemy, setPlayer, setEnemy } = useStateContext()
+  const { Player, Enemy, MyTurn } = useStateContext()
   const [Winer, setWiner] = useState(false)
   const [nameWiner, setNameWiner] = useState('')
 
@@ -24,7 +25,33 @@ const Game = () => {
   const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy)
 
   useEffect(() => {
-    if (turn % 2 == 0 && lifePointsEnemy >= 0) {
+    setLifePointsPlayer(Player.life)
+    setLifePointsEnemy(Enemy.life)
+    setEnergyPointsPlayer(Player.energy)
+    setEnergyPointsEnemy(Enemy.energy)
+    if(turn === 0){
+      setTurn(1)
+    }
+  }, [])
+
+  function TurnEnemyParOrImppar(){
+    if(MyTurn === 1){
+    return turn % 2  != 0
+    } else {
+      if(turn > 0){
+        return turn % 2  == 0
+      }
+      else{
+        return turn > 100
+      }
+    }
+  }
+
+  
+
+
+  useEffect(() => {
+    if (TurnEnemyParOrImppar() && lifePointsEnemy >= 0) {
       setTimeout(() => {
         EnemyInteligense()
       }, 1000);
@@ -58,13 +85,7 @@ const Game = () => {
     }
   }, [lifePointsEnemy, lifePointsPlayer])
 
-  useEffect(() => {
-    setLifePointsPlayer(Player.life)
-    setLifePointsEnemy(Enemy.life)
-    setEnergyPointsPlayer(Player.energy)
-    setEnergyPointsEnemy(Enemy.energy)
-  }, [])
-
+  
 
   function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number) {
     incTurn(setTurn)
@@ -74,14 +95,11 @@ const Game = () => {
       setEnergy((prevEnergy: number) => prevEnergy + (Master.energy / 2))
     }
   }
-  console.log(Player)
 
   function EnemyInteligense() {
     const ArrayCost = new Array()
     ArrayCost.push(Enemy.hability1.cost, Enemy.hability2.cost, Enemy.hability3.cost, Enemy.hability4.cost)
-    console.log(ArrayCost)
     const NewArrayCost = ArrayCost.filter(hability => hability < EnergyPointsEnemy)
-    console.log(NewArrayCost)
 
     const random = getRandomArbitrary(0, NewArrayCost.length)
 
@@ -118,20 +136,13 @@ const Game = () => {
       </div>
       <main className='flex justify-between pt-[10rem]'>
         <LayautHero type='Player' energy={EnergyPointsPlayer} name={Player.name} lifePoints={lifePointsPlayer}>
-        <Button types={Player.hability1.types} disabled={turn % 2 == 0} onClick={() => DispatchHabilitiesPlayer()?.hability1()}
-              >{Player.hability1.name}</Button>
-              <Button types={Player.hability2.types} onClick={() => DispatchHabilitiesPlayer()?.hability2()} disabled={turn % 2 == 0}>{Player.hability2.name}</Button>
-              <Button types={Player.hability3.types} onClick={() => DispatchHabilitiesPlayer()?.hability3()} disabled={turn % 2 == 0}>{Player.hability3.name}</Button>
-              <Button types={Player.hability4.types} onClick={() => DispatchHabilitiesPlayer()?.hability4()} disabled={turn % 2 == 0}>{Player.hability4.name}</Button>
-              <Button custom='bg-slate-500' onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
-                disabled={turn % 2 == 0} >Passar</Button>
+          <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesPlayer} Master={Player} turn={turn} />
+          <Button custom='bg-slate-500' onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
+            disabled={TurnEnemyParOrImppar()} >Passar</Button>
         </LayautHero>
 
         <LayautHero energy={EnergyPointsEnemy} lifePoints={lifePointsEnemy} name={Enemy.name} type='Enemy'>
-        <Button types={Enemy.hability1.types} onClick={() => DispatchHabilitiesEnemy()?.hability1()} disabled >{Enemy.hability1.name}</Button>
-              <Button types={Enemy.hability2.types} onClick={() => DispatchHabilitiesEnemy()?.hability2()} disabled >{Enemy.hability2.name}</Button>
-              <Button types={Enemy.hability3.types} onClick={() => DispatchHabilitiesEnemy()?.hability3()} disabled >{Enemy.hability3.name}</Button>
-              <Button types={Enemy.hability4.types} onClick={() => DispatchHabilitiesEnemy()?.hability4()} disabled >{Enemy.hability4.name}</Button>
+          <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesEnemy} Master={Enemy} turn={turn} enemy={true}/>
         </LayautHero>
 
       </main>

@@ -4,7 +4,7 @@ import { incTurn } from "../functions/ModElements"
 
 export const Lula = {
   name: 'Lula',
-  life: 10,
+  life: 300,
   energy: 12,
   hability1: {name :'cachacinha' , cost: 3, types: 'heal'},
   hability2:  {name :'Roubo' , cost: 5, types: 'heal'},
@@ -26,6 +26,7 @@ export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,
     } else {
       setMyEnergy((prevEnergy: number) => prevEnergy - value)
       incTurn(SetTurn)
+      console.log('a')
       return true
     }
   }

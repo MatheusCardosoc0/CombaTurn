@@ -1,12 +1,13 @@
 import React, { ButtonHTMLAttributes } from 'react'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: string
   types?: string
-  custom?: string
+  custom?: any
+  enemy?: boolean
 }
 
-const Button = ({children, types, custom, ...props} : ButtonProps) => {
+const Button = ({ children, types, enemy, custom, ...props }: ButtonProps) => {
 
   const Heal = 'bg-gradient-to-tr from-green-400 to-teal-500'
   const Damage = 'bg-gradient-to-tr from-red-400 to-orange-500'
@@ -14,21 +15,23 @@ const Button = ({children, types, custom, ...props} : ButtonProps) => {
 
   const Custom = custom
 
-  function TypeColor(){
-    if(types == 'heal'){
+  function TypeColor() {
+    if (types == 'heal') {
       return Heal
     }
-    if(types == 'damage'){
+    if (types == 'damage') {
       return Damage
     }
-    if(types == 'suport'){
+    if (types == 'suport') {
       return Suport
     }
   }
 
 
+
+
   return (
-    <button {...props} className={`py-2 px-1  rounded-tl-2xl ${types?TypeColor() : Custom} rounded-br-2xl text-white font-bold textShadow hover:scale-105 drop-shadow-[-2px_2px_2px_rgba(45,16,16,30.35)]`}
+    <button {...props} className={`py-2 px-1   ${types && TypeColor()} rounded-br-2xl rounded-tl-2xl  text-white font-bold textShadow hover:scale-105 drop-shadow-[-2px_2px_2px_rgba(45,16,16,30.35)] ${Custom}`}
     >{children}</button>
   )
 }
