@@ -16,3 +16,48 @@
   70%{text-shadow: 4px 4px 1px rgba(0,0,0,30.35)}
   100%{text-shadow: 5px 5px 1px rgba(0,0,0,30.35)} 
  }
+
+
+ .face {
+   width: 300px;
+   height: 300px;
+   perspective: 700px;
+   border-radius: 100%;
+   animation: girar 2s;
+ }
+ 
+ .front, .back {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   padding: 10px;
+   border-radius: 10px;
+   transition: 700ms;
+   border-radius: 100%;
+ }
+ 
+ .front {
+   background-image: url("http://pngimg.com/uploads/coin/coin_PNG36940.png");
+   background-size: cover;
+   z-index: 1;
+ }
+ 
+ .back {
+   background-image: url("https://w7.pngwing.com/pngs/884/848/png-transparent-gold-coin-gold-coin-czech-koruna-austro-hungarian-krone-coin-gold-coin-medal-gold.png");
+   background-position: center;
+   background-size: cover;
+   transform: rotateY(-180deg);
+   backface-visibility: hidden;
+ }
+ 
+ .girarFront .front {
+   transform: rotateY(180deg);
+   z-index: 0;
+ }
+ 
+ .girarBack .back {
+   transform: rotateY(0);
+   z-index: 1;
+ }
+ 
+ 

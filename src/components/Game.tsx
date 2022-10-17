@@ -46,6 +46,7 @@ const Game = () => {
       }
     }
   }
+  console.log(MyTurn)
 
   
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Hero, useStateContext } from '../context/UseContext'
 
 export function getRandomArbitrary(min: number, max: number) {
@@ -9,10 +9,21 @@ export function getRandomArbitrary(min: number, max: number) {
 
 const Selection = () => {
 
+
+  const [spinCoin, setSpinCoin] = useState('')
+  const [showCoin, setShowCoin] = useState(false)
+  const [showPrimer, setShowPrimer] = useState('')
+
   const { Heros, setShow, setPlayer, setEnemy, setMyTurn, MyTurn } = useStateContext()
 
-  function PushHeroOnPlayerAndShowGame(value: Hero) {
+  useEffect(() => {
     setMyTurn(getRandomArbitrary(1, 3))
+  },[])
+
+  function PushHeroOnPlayerAndShowGame(value: Hero) {
+    front()
+    console.log(MyTurn)
+   
 
     setTimeout(() => {
       setPlayer(value)
@@ -21,29 +32,55 @@ const Selection = () => {
 
 
       setEnemy(Enemyes[getRandomArbitrary(0, Enemyes.length)])
+      
 
 
       setShow('Game')
-    }, 2000);
+    }, 5500);
   }
 
-  function whoStarts(){
-    if(MyTurn === 1){
-      return(
-        <div>
-          O inimigo começa
-        </div>
-      )
-    }
+  function whoStarts() {
+    setTimeout(() => {
+      if (MyTurn === 1) {
+        return  (
+          <span>
+            o inimigo começa
+          </span>
+        )
+      }
+      if (MyTurn === 2) {
+        return (
+          <span>
+            Você começa
+          </span>
+        )
+      }
+    }, 3700);
+    
+  }
+  function front() {
+    setShowCoin(true)
+    setTimeout(() => {
+      setSpinCoin('girarFront')
+    }, 100);
+    setTimeout(() => {
+      setSpinCoin('girarBack')
+    }, 900);
+    setTimeout(() => {
+      setSpinCoin('girarFront')
+    }, 1800);
+    setTimeout(() => {
+      setSpinCoin('girarBack')
+      setShowPrimer('O enemigo começa')
+    }, 2700);
     if(MyTurn === 2){
-      return(
-        <div>
-          Você começa
-        </div>
-      )
+      setTimeout(() => {
+        setSpinCoin('girarFront')
+        setShowPrimer('Você começa')
+      }, 3400);
     }
+    
   }
-
 
 
   return (
@@ -63,7 +100,15 @@ const Selection = () => {
           })}
         </div>
       </section>
-      {MyTurn != 0 && whoStarts()}
+      {showCoin &&
+        <div className='fixed h-screen w-full flex justify-center items-center'>
+          <div className={`face ${spinCoin}`}>
+            <div className='front' />
+            <div className='back' />
+            <span className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-2xl text-white font-bold textShadow'>{showPrimer}</span>
+          </div>
+        </div>
+      }
     </div>
   )
 }
