@@ -12,21 +12,24 @@ export const Lula = {
   hability4:  {name :'Aumentar imposto' , cost: 2, types: 'damage'}
 }
 
-export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number) =>{
+export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any) =>{
 
   const [Corrupção, setCorrupção] = useState(0)
   const [impost, setImpost] = useState(0)
   const [impostCharged, setImpostCharged] = useState(false)
 
 
-  function readjustmentEnergy(value: number){
+  function readjustmentEnergy(value: number, description: string){
     if(MyEnergy < value){
       alert(`Essa habilidade exige ${value} de energia para ser executada`)
       return false
     } else {
       setMyEnergy((prevEnergy: number) => prevEnergy - value)
       incTurn(SetTurn)
-      console.log('a')
+      setActionTurn(description)
+      setTimeout(() => {
+        setActionTurn("")
+      }, 2000); 
       return true
     }
   }
@@ -38,27 +41,34 @@ export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,
     }
   },[turnCurrent])
 
+  let action;
+
 
   function Atack1(){
-    if(readjustmentEnergy(Lula.hability1.cost)){
-      LifePointsMy((life: number) => life + 50 + Corrupção) 
+    action = "Lula toma uma doze de 51 para recuperar a vida"
+    if(readjustmentEnergy(Lula.hability1.cost, action)){
+      LifePointsMy((life: number) => life + 50 + Corrupção)
+      
     }
   }
 
-  function Atack2(){ 
-    if(readjustmentEnergy(Lula.hability2.cost)){
+  function Atack2(){
+    action = "Lula rouba o turno do enemigo" 
+    if(readjustmentEnergy(Lula.hability2.cost, action)){
       incTurn(SetTurn) 
     }
   }
 
   function Atack3(){
-    if(readjustmentEnergy(Lula.hability3.cost)){
+    action = "Lula usa de sua honestidade para ter mais poder"
+    if(readjustmentEnergy(Lula.hability3.cost, action)){
       setCorrupção((Corrupção: number) => Corrupção + 20) 
     }
   }
 
   function Atack4(){
-    if(readjustmentEnergy(Lula.hability4.cost)){
+    action = "Lula usa de sua honestidade para ter mais poder"
+    if(readjustmentEnergy(Lula.hability4.cost, action)){
       if(!impostCharged){
         setImpost((prevImpost : number) => prevImpost + 40)
         setImpostCharged(true)

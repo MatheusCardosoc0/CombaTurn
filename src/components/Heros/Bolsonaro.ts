@@ -14,7 +14,7 @@ export const Bolsonaro = {
   hability4:  {name :'Porte de armas' , cost: 8, types: 'damage'}
 }
 
-export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, setMyEnergy: any, MyEnergy: number) =>{
+export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, setMyEnergy: any, MyEnergy: number, setActionTurn: any) =>{
 
   const [EnemyWeakening, setEmemyWeakening] = useState(1)
   const [atletic, setAtletic] = useState(false)
@@ -22,6 +22,8 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
 
   const valueBoosted = countBoosted * 10
 
+
+  
 
   function incBoosted(){
     return setCountBoosted((count: number) => count + 1)
@@ -37,7 +39,7 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
 
   const DamageAtack4 = Damage4 + Damage4 + Damage4
 
-  function readjustmentEnergy(value: number){
+  function readjustmentEnergy(value: number, description : string){
     if(MyEnergy < value){
       alert(`Essa habilidade exige ${value} de energia para ser executada`)
       return false
@@ -47,34 +49,43 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
       }
       setMyEnergy((prevEnergy: number) => prevEnergy - value)
       incTurn(SetTurn)
+      setActionTurn(description)
+      setTimeout(() => {
+        setActionTurn("")
+      }, 2000);
       incBoosted()
-      console.log(EnemyWeakening)
       return true
     }
   }
 
+  let action;
+
   
 
-  function atack1(){   
-    if(readjustmentEnergy(Bolsonaro.hability1.cost)){
+  function atack1(){ 
+    action = 'uhre'  
+    if(readjustmentEnergy(Bolsonaro.hability1.cost, action)){
       setEmemyWeakening((inc : number) => inc + 0.3)
     }    
   }
 
   function atack2(){
-    if(readjustmentEnergy(Bolsonaro.hability2.cost)){
+    action = 'uhre'  
+    if(readjustmentEnergy(Bolsonaro.hability2.cost, action)){
       LifePointsMy((life: number) => life + 150 + valueBoosted)
       setAtletic(true)
     }
     
   }
   function atack3(){
-    if(readjustmentEnergy(Bolsonaro.hability3.cost)){
+    action = 'uhre'  
+    if(readjustmentEnergy(Bolsonaro.hability3.cost, action)){
       LifePointsEnemy((life: number) => life - 60 * EnemyWeakening)
     }
   }
   function atack4(){
-    if(readjustmentEnergy(Bolsonaro.hability4.cost)){
+    action = 'uhre'  
+    if(readjustmentEnergy(Bolsonaro.hability4.cost, action)){
       LifePointsEnemy((life: number) => life - DamageAtack4 * EnemyWeakening)
     }
     

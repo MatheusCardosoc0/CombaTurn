@@ -19,6 +19,7 @@ const LayautHero = ({ energy, lifePoints, name, children, type }: LayautHeroProp
       return 'bg-red-500 rounded-l-2xl'
     }
   }
+  
 
 
   return (

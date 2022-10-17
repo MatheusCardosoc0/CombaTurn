@@ -19,43 +19,44 @@ const Game = () => {
   const { Player, Enemy, MyTurn } = useStateContext()
   const [Winer, setWiner] = useState(false)
   const [nameWiner, setNameWiner] = useState('')
+  const [ActionTurn, setActionTurn] = useState('')
 
-  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer)
+  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer, setActionTurn)
 
-  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy)
+  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy, setActionTurn)
 
   useEffect(() => {
     setLifePointsPlayer(Player.life)
     setLifePointsEnemy(Enemy.life)
     setEnergyPointsPlayer(Player.energy)
     setEnergyPointsEnemy(Enemy.energy)
-    if(turn === 0){
+    if (turn === 0) {
       setTurn(1)
     }
   }, [])
 
-  function TurnEnemyParOrImppar(){
-    if(MyTurn === 1){
-    return turn % 2  != 0
+  function TurnEnemyParOrImppar() {
+    if (MyTurn === 1) {
+      return turn % 2 != 0
     } else {
-      if(turn > 0){
-        return turn % 2  == 0
+      if (turn > 0) {
+        return turn % 2 == 0
       }
-      else{
-        return turn > 100
+      else {
+        return false
       }
     }
   }
   console.log(MyTurn)
 
-  
+
 
 
   useEffect(() => {
     if (TurnEnemyParOrImppar() && lifePointsEnemy >= 0) {
       setTimeout(() => {
         EnemyInteligense()
-      }, 1000);
+      }, 2000);
     }
     else {
       return
@@ -86,7 +87,7 @@ const Game = () => {
     }
   }, [lifePointsEnemy, lifePointsPlayer])
 
-  
+
 
   function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number) {
     incTurn(setTurn)
@@ -143,7 +144,7 @@ const Game = () => {
         </LayautHero>
 
         <LayautHero energy={EnergyPointsEnemy} lifePoints={lifePointsEnemy} name={Enemy.name} type='Enemy'>
-          <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesEnemy} Master={Enemy} turn={turn} enemy={true}/>
+          <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesEnemy} Master={Enemy} turn={turn} enemy={true} />
         </LayautHero>
 
       </main>
@@ -154,6 +155,13 @@ const Game = () => {
             >Parabéns, {nameWiner} venceu!</h2> :
             <h2 className='text-5xl font-bold items-center flex justify-center text-red-500 span'
             >Você perdeu, {nameWiner} venceu!</h2>}
+        </span>
+      }
+      {ActionTurn.length > 0 &&
+        <span className=' fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-tr from-yellow-500 to-yellow-600 w-[25rem] h-[20rem] p-2 font-bold rounded-2xl'>
+          <div className='bg-gradient-to-b from-slate-100 to-slate-300 text-2xl rounded-2xl flex w-full h-full p-4 items-center text-blue-700' >
+            {ActionTurn}
+          </div>
         </span>
       }
     </div>
