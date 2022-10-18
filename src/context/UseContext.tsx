@@ -20,7 +20,14 @@ export type Hero = {
   hability4: HeroHability
 }
 
+export type ResultActionAlertProps = {
+  action: any
+  type: string
+}
+
 type InitialValue = {
+  alertResultsAction: string
+  setalertResultsAction: any
   Heros: Hero[]
   setHeros: any
   show: string
@@ -34,6 +41,8 @@ type InitialValue = {
 }
 
 const Initial = {
+  alertResultsAction: '',
+  setalertResultsAction: (value: ResultActionAlertProps ) => {},
   Heros: [],
   setHeros: '',
   MyTurn: 0,
@@ -73,13 +82,14 @@ export const UseContextProvider = ({ children }: userContextprops) => {
   const [Enemy, setEnemy] = useState<Hero>(Initial.Enemy)
   const [show, setShow] = useState<'Initial' | 'Selection' | 'Game'>('Initial')
   const [MyTurn, setMyTurn] = useState(Initial.MyTurn)
+  const [alertResultsAction, setalertResultsAction] = useState('')
 
 
 
   return (
     <UserContext.Provider value={
       {
-        Player, setPlayer, Enemy, setEnemy, show, setShow, Heros, setHeros, MyTurn, setMyTurn
+        Player, setPlayer, Enemy, setEnemy, show, setShow, Heros, setHeros, MyTurn, setMyTurn, alertResultsAction, setalertResultsAction
       }
     }>
       {children}

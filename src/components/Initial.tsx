@@ -19,7 +19,8 @@ const Initial = () => {
 
 
   return (
-    <div className='px-4 py-6 bg-gradient-to-tr from-slate-600 to-gray-900 rounded-lg flex flex-col gap-20'>
+    <div className='bg-gradient-to-tr from-slate-600 to-gray-900 w-full h-screen flex justify-center items-center'>
+    <div className='px-4 py-6  rounded-lg flex flex-col gap-20'>
       <h1 className='font-bold text-5xl bg-gradient-to-r bg-clip-text text-transparent from-yellow-300  to-red-700'>Confronto RPG</h1>
 
       <main className='flex flex-col justify-center gap-4'>
@@ -39,6 +40,7 @@ const Initial = () => {
           Opções</button>
 
       </main>
+    </div>
     </div>
   )
 }

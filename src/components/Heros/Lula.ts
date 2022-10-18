@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { incTurn } from "../functions/ModElements"
+import { toast } from "react-toastify"
+import ModElements, { ActionDetails, incTurn} from "../functions/ModElements"
 
 
 export const Lula = {
@@ -12,7 +13,7 @@ export const Lula = {
   hability4:  {name :'Aumentar imposto' , cost: 2, types: 'damage'}
 }
 
-export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any) =>{
+export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) =>{
 
   const [Corrupção, setCorrupção] = useState(0)
   const [impost, setImpost] = useState(0)
@@ -26,10 +27,7 @@ export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,
     } else {
       setMyEnergy((prevEnergy: number) => prevEnergy - value)
       incTurn(SetTurn)
-      setActionTurn(description)
-      setTimeout(() => {
-        setActionTurn("")
-      }, 2000); 
+      ActionDetails(description, setActionTurn)
       return true
     }
   }
@@ -48,14 +46,15 @@ export const StatsLula = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,
     action = "Lula toma uma doze de 51 para recuperar a vida"
     if(readjustmentEnergy(Lula.hability1.cost, action)){
       LifePointsMy((life: number) => life + 50 + Corrupção)
-      
+      AlertsResultsAction(Lula.hability1.types)
+      toast.success('+' + Number( 50 + Corrupção))     
     }
   }
 
   function Atack2(){
     action = "Lula rouba o turno do enemigo" 
     if(readjustmentEnergy(Lula.hability2.cost, action)){
-      incTurn(SetTurn) 
+      incTurn(SetTurn)
     }
   }
 

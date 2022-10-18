@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
 import { Hero, useStateContext } from '../context/UseContext'
-import { incTurn } from './functions/ModElements'
+import { ActionDetails, incTurn } from './functions/ModElements'
 import SelectorHabilitiesEnemy from './functions/SelectorHabilitesEnemy'
 import SelectorHabilitiesPlayer from './functions/SelectorHabilitiesPlayer'
 import { getRandomArbitrary } from './Selection'
 import Button from './utils/Button'
 import LayautButtons from './utils/LayautButtons'
 import LayautHero from './utils/LayautHero'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Game = () => {
 
@@ -16,14 +18,14 @@ const Game = () => {
   const [lifePointsEnemy, setLifePointsEnemy] = useState(1)
   const [EnergyPointsPlayer, setEnergyPointsPlayer] = useState(0)
   const [EnergyPointsEnemy, setEnergyPointsEnemy] = useState(0)
-  const { Player, Enemy, MyTurn } = useStateContext()
+  const { Player, Enemy, MyTurn, setalertResultsAction, alertResultsAction } = useStateContext()
   const [Winer, setWiner] = useState(false)
   const [nameWiner, setNameWiner] = useState('')
   const [ActionTurn, setActionTurn] = useState('')
 
-  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer, setActionTurn)
+  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer, setActionTurn, setalertResultsAction)
 
-  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy, setActionTurn)
+  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy, setActionTurn, setalertResultsAction)
 
   useEffect(() => {
     setLifePointsPlayer(Player.life)
@@ -47,7 +49,6 @@ const Game = () => {
       }
     }
   }
-  console.log(MyTurn)
 
 
 
@@ -91,6 +92,8 @@ const Game = () => {
 
   function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number) {
     incTurn(setTurn)
+    ActionDetails('Passou a vez para recuperar energia', setActionTurn)
+    toast.success(- 25)
     if ((energyCurrent + (Master.energy / 2)) > Master.energy) {
       setEnergy(Master.energy)
     } else {
@@ -125,6 +128,26 @@ const Game = () => {
     }
 
   }
+  function modAlert(){
+    if(alertResultsAction == 'heal'){
+      return 'text-green-500'
+    }
+    else if(alertResultsAction == 'suport'){
+      return 'text-purple-500'
+    }
+    else if(alertResultsAction == 'damage'){
+      return 'text-red-500'
+    }
+  }
+
+  function alertPosition(){
+    if(TurnEnemyParOrImppar()){
+      return 'top-left'
+    } else {
+      return 'top-right'
+    }
+  }
+  console.log(alertResultsAction)
 
 
 
@@ -141,6 +164,7 @@ const Game = () => {
           <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesPlayer} Master={Player} turn={turn} />
           <Button custom='bg-slate-500' onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
             disabled={TurnEnemyParOrImppar()} >Passar</Button>
+    
         </LayautHero>
 
         <LayautHero energy={EnergyPointsEnemy} lifePoints={lifePointsEnemy} name={Enemy.name} type='Enemy'>
@@ -159,11 +183,12 @@ const Game = () => {
       }
       {ActionTurn.length > 0 &&
         <span className=' fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-tr from-yellow-500 to-yellow-600 w-[25rem] h-[20rem] p-2 font-bold rounded-2xl'>
-          <div className='bg-gradient-to-b from-slate-100 to-slate-300 text-2xl rounded-2xl flex w-full h-full p-4 items-center text-blue-700' >
+          <div className={`bg-gradient-to-b from-slate-100 to-slate-300 text-2xl rounded-2xl flex w-full h-full p-4 items-center ${TurnEnemyParOrImppar()? 'text-blue-500' : 'text-red-500'}` }>
             {ActionTurn}
           </div>
         </span>
       }
+      <ToastContainer autoClose={1000} hideProgressBar={true} icon={false} toastClassName={`bg-transparent ${modAlert()}`} closeButton={false} className={`text-2xl w-24 font-bold } `} position={`${alertPosition()}`}  />
     </div>
   )
 }

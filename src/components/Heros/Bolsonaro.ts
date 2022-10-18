@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { Hero } from "../../context/UseContext"
-import ModElements, { incTurn } from "../functions/ModElements"
+import ModElements, { ActionDetails, incTurn } from "../functions/ModElements"
 import { getRandomArbitrary } from "../Selection"
 
 
@@ -14,7 +15,7 @@ export const Bolsonaro = {
   hability4:  {name :'Porte de armas' , cost: 8, types: 'damage'}
 }
 
-export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, setMyEnergy: any, MyEnergy: number, setActionTurn: any) =>{
+export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) =>{
 
   const [EnemyWeakening, setEmemyWeakening] = useState(1)
   const [atletic, setAtletic] = useState(false)
@@ -49,10 +50,7 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
       }
       setMyEnergy((prevEnergy: number) => prevEnergy - value)
       incTurn(SetTurn)
-      setActionTurn(description)
-      setTimeout(() => {
-        setActionTurn("")
-      }, 2000);
+      ActionDetails(description,setActionTurn)
       incBoosted()
       return true
     }
@@ -66,6 +64,8 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
     action = 'uhre'  
     if(readjustmentEnergy(Bolsonaro.hability1.cost, action)){
       setEmemyWeakening((inc : number) => inc + 0.3)
+      AlertsResultsAction(Bolsonaro.hability1.types)
+      toast.success('+' + Number(EnemyWeakening ))
     }    
   }
 
