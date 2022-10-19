@@ -5,17 +5,19 @@ import ModElements, { ActionDetails, incTurn } from "../functions/ModElements"
 import { getRandomArbitrary } from "../Selection"
 
 
-export const Bolsonaro = {
-  name: 'Bolsonaro',
+export const Caçador = {
+  avatar: 'http://pm1.narvii.com/6774/9dbcdac27c8e3290cbc33538b5403656da667915v2_00.jpg',
+  name: 'Caçador',
   life: 300,
   energy: 15,
-  hability1: {name :'Cloroquina' , cost: 3, types: 'suport'},
-  hability2:  {name :'Historico de atleta' , cost: 3, types: 'heal'},
-  hability3:  {name :'Imbrochavel' , cost: 5, types: 'damage'}, 
-  hability4:  {name :'Porte de armas' , cost: 8, types: 'damage'}
+  hability1: {name :'Golpe de adaga' , cost: 3, types: 'damage'},
+  hability2:  {name :'Poção de cura' , cost: 4, types: 'heal'},
+  hability3:  {name :'Armadilha' , cost: 3, types: 'suport'}, 
+  hability4:  {name :'Tiro neutralizador' , cost: 3, types: 'damage'}
 }
 
-export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) =>{
+
+export const StatsCaçador = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) =>{
 
   const [EnemyWeakening, setEmemyWeakening] = useState(1)
   const [atletic, setAtletic] = useState(false)
@@ -62,16 +64,16 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
 
   function atack1(){ 
     action = 'uhre'  
-    if(readjustmentEnergy(Bolsonaro.hability1.cost, action)){
+    if(readjustmentEnergy(Caçador.hability1.cost, action)){
       setEmemyWeakening((inc : number) => inc + 0.3)
-      AlertsResultsAction(Bolsonaro.hability1.types)
+      AlertsResultsAction(Caçador.hability1.types)
       toast.success('+' + Number(EnemyWeakening ))
     }    
   }
 
   function atack2(){
     action = 'uhre'  
-    if(readjustmentEnergy(Bolsonaro.hability2.cost, action)){
+    if(readjustmentEnergy(Caçador.hability2.cost, action)){
       LifePointsMy((life: number) => life + 150 + valueBoosted)
       setAtletic(true)
     }
@@ -79,13 +81,13 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
   }
   function atack3(){
     action = 'uhre'  
-    if(readjustmentEnergy(Bolsonaro.hability3.cost, action)){
+    if(readjustmentEnergy(Caçador.hability3.cost, action)){
       LifePointsEnemy((life: number) => life - 60 * EnemyWeakening)
     }
   }
   function atack4(){
     action = 'uhre'  
-    if(readjustmentEnergy(Bolsonaro.hability4.cost, action)){
+    if(readjustmentEnergy(Caçador.hability4.cost, action)){
       LifePointsEnemy((life: number) => life - DamageAtack4 * EnemyWeakening)
     }
     
@@ -93,12 +95,12 @@ export const StatsBolsonaro = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
 
 
 
-  const HabiltiesBolso = {
+  const HabiltiesCaçador = {
     hability1: atack1,
     hability2: atack2,
     hability3: atack3,
     hability4: atack4,
   }
 
-  return {HabiltiesBolso}
+  return {HabiltiesCaçador}
 }

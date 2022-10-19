@@ -11,6 +11,7 @@ export type HeroHability = {
 }
 
 export type Hero = {
+  avatar: any
   name: string
   life: number
   energy: number
@@ -50,6 +51,7 @@ const Initial = {
   show: 'Initial' || 'Selection' || 'Game',
   setShow: '',
   Player: {
+    avatar: '',
     name: '',
     life: 1,
     energy: 0,
@@ -59,6 +61,7 @@ const Initial = {
     hability4: {name: '', cost: 0, types: ''},
   },
   Enemy: {
+    avatar: '',
     name: '',
     life: 1,
     energy: 0,

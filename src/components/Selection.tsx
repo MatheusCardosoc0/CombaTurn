@@ -13,17 +13,19 @@ const Selection = () => {
   const [spinCoin, setSpinCoin] = useState('')
   const [showCoin, setShowCoin] = useState(false)
   const [showPrimer, setShowPrimer] = useState('')
+  const [effectButton, setEffectButton] = useState(false)
 
   const { Heros, setShow, setPlayer, setEnemy, setMyTurn, MyTurn } = useStateContext()
 
   useEffect(() => {
     setMyTurn(getRandomArbitrary(1, 3))
-  },[])
+  }, [])
 
   function PushHeroOnPlayerAndShowGame(value: Hero) {
+    setEffectButton(true)
     front()
     console.log(MyTurn)
-   
+
 
     setTimeout(() => {
       setPlayer(value)
@@ -32,7 +34,7 @@ const Selection = () => {
 
 
       setEnemy(Enemyes[getRandomArbitrary(0, Enemyes.length)])
-      
+
 
 
       setShow('Game')
@@ -42,7 +44,7 @@ const Selection = () => {
   function whoStarts() {
     setTimeout(() => {
       if (MyTurn === 1) {
-        return  (
+        return (
           <span>
             o inimigo começa
           </span>
@@ -56,7 +58,7 @@ const Selection = () => {
         )
       }
     }, 3700);
-    
+
   }
   function front() {
     setShowCoin(true)
@@ -73,28 +75,33 @@ const Selection = () => {
       setSpinCoin('girarBack')
       setShowPrimer('O enemigo começa')
     }, 2700);
-    if(MyTurn === 2){
+    if (MyTurn === 2) {
       setTimeout(() => {
         setSpinCoin('girarFront')
         setShowPrimer('Você começa')
       }, 3400);
     }
-    
+
   }
 
 
   return (
-    <div className='h-screen w-full items-center flex justify-center flex-col bg-gradient-to-r from-gray-900 via-blue-500 to-gray-900'>
-      <section className='bg-slate-300 px-8 py-6 rounded-lg drop-shadow-[-16px_12px_2px_rgba(45,16,16,30.35)]'>
-        <h2 className='text-3xl mb-6'>Selecione com quem irá jogar</h2>
-        <div className='bg-blue-500 flex justify-around py-8 rounded-lg'>
+    <div className='h-screen w-full items-center flex justify-center flex-col bg-gradient-to-r from-gray-900 via-green-500 to-gray-300'>
+      <section className='bg-gradient-to-r from-gray-900  to-slate-900 bg-clip-text text-transparent px-8 py-6 rounded-lg flex flex-col justify-center'>
+        <h2 className='text-5xl mb-6 mx-auto font-bold textShadow2'>Selecione com quem irá jogar</h2>
+        <div className=' flex justify-around py-8 rounded-lg gap-12 px-8'>
           {Heros.map(hero => {
             return (
-              <button
-                className='bg-slate-200 rounded-full p-5'
+              <button className='bg-slate-900 rounded-full pb-2 '
                 key={hero.name}
                 onClick={() => PushHeroOnPlayerAndShowGame(hero)}>
-                {hero.name}
+                <img className={` rounded-full w-[220px] h-[200px] bg-cover bg-center border-[2px] border-slate-600`}
+                  src={`${hero.avatar}`} />
+                  <div>
+                  {!effectButton && <h3 className='text-white font-semibold'>{hero.name}</h3>}
+                  </div>
+                
+
               </button>
             )
           })}

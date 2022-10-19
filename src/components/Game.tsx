@@ -93,6 +93,7 @@ const Game = () => {
   function RecargeEnergyAndPassTurn(setEnergy: any, Master: Hero, energyCurrent: number) {
     incTurn(setTurn)
     ActionDetails('Passou a vez para recuperar energia', setActionTurn)
+    setalertResultsAction('suport')
     toast.success(- 25)
     if ((energyCurrent + (Master.energy / 2)) > Master.energy) {
       setEnergy(Master.energy)
@@ -128,23 +129,32 @@ const Game = () => {
     }
 
   }
-  function modAlert(){
-    if(alertResultsAction == 'heal'){
+  function modAlert() {
+    if (alertResultsAction == 'heal') {
       return 'text-green-500'
     }
-    else if(alertResultsAction == 'suport'){
+    else if (alertResultsAction == 'suport') {
       return 'text-purple-500'
     }
-    else if(alertResultsAction == 'damage'){
+    else if (alertResultsAction == 'damage') {
       return 'text-red-500'
     }
   }
 
-  function alertPosition(){
-    if(TurnEnemyParOrImppar()){
-      return 'top-left'
+  function alertPosition() {
+    if (TurnEnemyParOrImppar()) {
+      if (alertResultsAction == 'damage') {
+        return 'top-right'
+      } else {
+        return 'top-left'
+      }
+
     } else {
-      return 'top-right'
+      if (alertResultsAction == 'damage') {
+        return 'top-left'
+      } else {
+        return 'top-right'
+      }
     }
   }
   console.log(alertResultsAction)
@@ -164,7 +174,7 @@ const Game = () => {
           <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesPlayer} Master={Player} turn={turn} />
           <Button custom='bg-slate-500' onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
             disabled={TurnEnemyParOrImppar()} >Passar</Button>
-    
+
         </LayautHero>
 
         <LayautHero energy={EnergyPointsEnemy} lifePoints={lifePointsEnemy} name={Enemy.name} type='Enemy'>
@@ -183,12 +193,12 @@ const Game = () => {
       }
       {ActionTurn.length > 0 &&
         <span className=' fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-tr from-yellow-500 to-yellow-600 w-[25rem] h-[20rem] p-2 font-bold rounded-2xl'>
-          <div className={`bg-gradient-to-b from-slate-100 to-slate-300 text-2xl rounded-2xl flex w-full h-full p-4 items-center ${TurnEnemyParOrImppar()? 'text-blue-500' : 'text-red-500'}` }>
+          <div className={`bg-gradient-to-b from-slate-100 to-slate-300 text-2xl rounded-2xl flex w-full h-full p-4 items-center ${TurnEnemyParOrImppar() ? 'text-blue-500' : 'text-red-500'}`}>
             {ActionTurn}
           </div>
         </span>
       }
-      <ToastContainer autoClose={1000} hideProgressBar={true} icon={false} toastClassName={`bg-transparent ${modAlert()}`} closeButton={false} className={`text-2xl w-24 font-bold } `} position={`${alertPosition()}`}  />
+      <ToastContainer autoClose={1000} hideProgressBar={true} icon={false} toastClassName={`bg-transparent ${modAlert()}`} closeButton={false} className={`text-2xl w-24 font-bold } `} position={`${alertPosition()}`} />
     </div>
   )
 }

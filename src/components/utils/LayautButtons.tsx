@@ -18,11 +18,11 @@ const LayautButtons = ({Master,turn, DispatchHabilitiesMaster, enemy, turnEnemy}
 
   return (
     <>
-      <Button custom={enemy && thisIsAnEnemy} types={Master.hability1.types} disabled={enemy ? true :turnEnemy()} onClick={() => DispatchHabilitiesMaster()?.hability1()}
+      <Button custom={enemy && thisIsAnEnemy} types={Master.hability1.types} disabled={enemy ? true :turnEnemy()} onClick={() => DispatchHabilitiesMaster(Master)?.hability1()}
       >{Master.hability1.name}</Button>
-      <Button custom={enemy && thisIsAnEnemy} types={Master.hability2.types} onClick={() => DispatchHabilitiesMaster()?.hability2()} disabled={enemy ? true :turnEnemy()}>{Master.hability2.name}</Button>
-      <Button custom={enemy && thisIsAnEnemy} types={Master.hability3.types} onClick={() => DispatchHabilitiesMaster()?.hability3()} disabled={enemy? true :turnEnemy()}>{Master.hability3.name}</Button>
-      <Button custom={enemy && thisIsAnEnemy} types={Master.hability4.types} onClick={() => DispatchHabilitiesMaster()?.hability4()} disabled={enemy? true :turnEnemy()}>{Master.hability4.name}</Button>
+      <Button custom={enemy && thisIsAnEnemy} types={Master.hability2.types} onClick={() => DispatchHabilitiesMaster(Master)?.hability2()} disabled={enemy ? true :turnEnemy()}>{Master.hability2.name}</Button>
+      <Button custom={enemy && thisIsAnEnemy} types={Master.hability3.types} onClick={() => DispatchHabilitiesMaster(Master)?.hability3()} disabled={enemy? true :turnEnemy()}>{Master.hability3.name}</Button>
+      <Button custom={enemy && thisIsAnEnemy} types={Master.hability4.types} onClick={() => DispatchHabilitiesMaster(Master)?.hability4()} disabled={enemy? true :turnEnemy()}>{Master.hability4.name}</Button>
     </>
   )
 }

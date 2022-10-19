@@ -1,19 +1,20 @@
 import { Hero } from '../../context/UseContext'
-import { StatsBolsonaro } from '../Heros/Bolsonaro'
-import { StatsLula } from '../Heros/Lula'
+import { StatsCaçador } from '../Heros/Caçador'
+import { StatsLobisomen } from '../Heros/Lobisomen'
 
 const SelectorHabilitiesPlayer = (Master: Hero, Turn: any, setMaster: any, LifePoints: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) => {
 
-  const {HabiltiesBolso} = StatsBolsonaro(LifePoints, Turn, setMaster,  setMyEnergy, MyEnergy, setActionTurn, AlertsResultsAction)
-  const {HabiltiesLula} = StatsLula(LifePoints, Turn, setMaster, turnCurrent,  setMyEnergy, MyEnergy, setActionTurn, AlertsResultsAction)
+  const {HabiltiesCaçador} = StatsCaçador(LifePoints, Turn, setMaster, turnCurrent,  setMyEnergy, MyEnergy, setActionTurn, AlertsResultsAction)
+  const {HabiltiesLobisomen} = StatsLobisomen(LifePoints, Turn, setMaster, turnCurrent,  setMyEnergy, MyEnergy, setActionTurn, AlertsResultsAction)
 
+  
 
   function DispatchHabilitiesPlayer(){
-    if(Master.name === 'Lula'){
-      return HabiltiesLula
+    if(Master.name === 'Lobisomen'){
+      return HabiltiesLobisomen
     }
-    else if(Master.name === 'Bolsonaro'){
-      return HabiltiesBolso
+    else if(Master.name === 'Caçador'){
+      return HabiltiesCaçador
     }
   }
 

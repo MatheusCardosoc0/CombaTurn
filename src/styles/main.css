@@ -11,6 +11,10 @@
    text-shadow: -1px 1px 1px rgba(0,0,0,30.35);
 }
 
+.textShadow2{
+  text-shadow: -1px 1px 1px rgba(250,143,24,30.35);
+}
+
 @keyframes shadow {
   10%{text-shadow: -4px 4px 1px rgba(0,0,0,30.35)}
   70%{text-shadow: 4px 4px 1px rgba(0,0,0,30.35)}
