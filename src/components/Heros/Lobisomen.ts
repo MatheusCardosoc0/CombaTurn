@@ -7,18 +7,16 @@ export const Lobisomen = {
   avatar: 'https://static.todamateria.com.br/upload/lo/bi/lobisomem-cke.jpg',
   name: 'Lobisomen',
   life: 400,
-  energy: 15,
-  hability1: {name :'Uivo estrondoso' , cost: 4, types: 'suport'},
-  hability2:  {name :'Mordida' , cost: 5, types: 'damage'},
-  hability3:  {name :'Golpe de garras' , cost: 4, types: 'damage'}, 
-  hability4:  {name :'Convocar matilha' , cost: 8, types: 'suport'}
+  energy: 20,
+  hability1: {name :'Uivo estrondoso' , cost: 6, types: 'suport'},
+  hability2:  {name :'Mordida' , cost: 4, types: 'damage'},
+  hability3:  {name :'Golpe de garras' , cost: 5, types: 'damage'}, 
+  hability4:  {name :'Convocar matilha' , cost: 15, types: 'suport'}
 }
 
-export const StatsLobisomen = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) =>{
+export const StatsLobisomen = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any, setShowMatilha: any,setShadow: any, shadow: boolean) =>{
 
   const [Medo, setMedo] = useState(1)
-  const [impost, setImpost] = useState(0)
-  const [impostCharged, setImpostCharged] = useState(false)
 
 
   function readjustmentEnergy(value: number, description: string){
@@ -26,19 +24,26 @@ export const StatsLobisomen = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
       alert(`Essa habilidade exige ${value} de energia para ser executada`)
       return false
     } else {
-      setMyEnergy((prevEnergy: number) => prevEnergy - value)
-      incTurn(SetTurn)
-      ActionDetails(description, setActionTurn)
-      return true
+        if(shadow == true){
+          AlertsResultsAction('suport')
+          toast.success('Errou') 
+          setMyEnergy((prevEnergy: number) => prevEnergy - value)
+          ActionDetails("Por conta da fumaça não conseguiu fazer nada", setActionTurn)
+          setShadow(false)
+          incTurn(SetTurn)        
+          return false   
+        } else{
+          setMyEnergy((prevEnergy: number) => prevEnergy - value)
+          incTurn(SetTurn)
+          ActionDetails(description, setActionTurn)
+          return true
+        }
     }
   }
 
-  useEffect(() => {
-    //precisa saber se o player joga primeiro ou não
-    if(turnCurrent % 2 != 0 && impostCharged == true){
-      LifePointsEnemy((life: number) => life - impost)
-    }
-  },[turnCurrent])
+  
+
+  
 
   let action;
 
@@ -58,9 +63,9 @@ export const StatsLobisomen = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
     if(readjustmentEnergy(Lobisomen.hability2.cost, action)){
       AlertsResultsAction(Lobisomen.hability2.types)
       LifePointsEnemy((life: number) => life - 40 * Medo )
-      toast.success('-' + (60 * Medo))
+      toast.success('-' + (40 * Medo))
       LifePointsMy((life: number) => life + 10 * Medo )
-      toast.success('+' + (15 * Medo))
+      toast.success('+' + (10 * Medo))
       setMedo(1)
     }
   }
@@ -76,16 +81,9 @@ export const StatsLobisomen = (LifePointsEnemy: any, SetTurn: any, LifePointsMy:
   }
 
   function Atack4(){
-    action = "Lobisomen usa de sua honestidade para ter mais poder"
+    action = "O Lobisomen conjura lobos para ajuda lo"
     if(readjustmentEnergy(Lobisomen.hability4.cost, action)){
-      if(!impostCharged){
-        setImpost((prevImpost : number) => prevImpost + 40)
-        setImpostCharged(true)
-      }
-      else{
-        setImpost((prevImpost : number) => prevImpost + (Medo / 3))
-        setMedo((Medo: number) => Medo + 10)
-      } 
+        setShowMatilha(true)
     } 
   }
 

@@ -10,85 +10,81 @@ export const Caçador = {
   name: 'Caçador',
   life: 300,
   energy: 15,
-  hability1: {name :'Golpe de adaga' , cost: 3, types: 'damage'},
-  hability2:  {name :'Poção de cura' , cost: 4, types: 'heal'},
-  hability3:  {name :'Armadilha' , cost: 3, types: 'suport'}, 
-  hability4:  {name :'Tiro neutralizador' , cost: 3, types: 'damage'}
+  hability1: {name :'Espada amaldiçoada' , cost: 4, types: 'special'},
+  hability2:  {name :'Poção de cura' , cost: 7, types: 'heal'},
+  hability3:  {name :'Armadilha amaldiçoada' , cost: 6, types: 'special'}, 
+  hability4:  {name :'Ocultação nas sombras' , cost: 5, types: 'suport'}
 }
 
 
-export const StatsCaçador = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any) =>{
+export const StatsCaçador = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any, turnCurrent: number,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any, shadow: any) =>{
 
-  const [EnemyWeakening, setEmemyWeakening] = useState(1)
-  const [atletic, setAtletic] = useState(false)
-  const [countBoosted, setCountBoosted] = useState(0)
-
-  const valueBoosted = countBoosted * 10
+  const [Maldição, setMaldição] = useState(0)
 
 
   
-
-  function incBoosted(){
-    return setCountBoosted((count: number) => count + 1)
-  }
-
-  function reduceEffectAtletic(){
-    LifePointsMy((life: number) => life - 100)
-    setAtletic(false)
-  }
-  
-
-  const Damage4 = (valueBoosted / 2) * getRandomArbitrary(1,3)
-
-  const DamageAtack4 = Damage4 + Damage4 + Damage4
-
   function readjustmentEnergy(value: number, description : string){
     if(MyEnergy < value){
       alert(`Essa habilidade exige ${value} de energia para ser executada`)
       return false
-    } else {
-      if(atletic == true){
-        reduceEffectAtletic()
-      }
+    } else {    
       setMyEnergy((prevEnergy: number) => prevEnergy - value)
       incTurn(SetTurn)
       ActionDetails(description,setActionTurn)
-      incBoosted()
       return true
     }
   }
+
+
+  useEffect(() => {
+    if(Maldição === 3){
+      LifePointsEnemy((life: number) => life - 150)
+      setMaldição(0)
+      AlertsResultsAction(Caçador.hability3.types)
+      toast.success('-' + 150)  
+      toast.success('!!!' + 3) 
+    }
+  },[Maldição])
 
   let action;
 
   
 
   function atack1(){ 
-    action = 'uhre'  
+    action = 'O caçador desfere um golpe com sua espada almadiçoada'  
     if(readjustmentEnergy(Caçador.hability1.cost, action)){
-      setEmemyWeakening((inc : number) => inc + 0.3)
+      LifePointsEnemy((life: number) => life - 40)
+      setMaldição((maldição: number) => maldição + 1)
       AlertsResultsAction(Caçador.hability1.types)
-      toast.success('+' + Number(EnemyWeakening ))
+      toast.success('-' + 40)  
+      toast.success('!!!' + Maldição)  
     }    
   }
 
   function atack2(){
-    action = 'uhre'  
+    action = 'O caçador toma uma poção para aumentar sua vitalidade'  
     if(readjustmentEnergy(Caçador.hability2.cost, action)){
-      LifePointsMy((life: number) => life + 150 + valueBoosted)
-      setAtletic(true)
+      LifePointsMy((life: number) => life + 80)
+      AlertsResultsAction(Caçador.hability2.types)
+      toast.success('+' + 80)  
     }
     
   }
   function atack3(){
-    action = 'uhre'  
+    action = 'O caçador convoca correntes amaldiçoadas que prendem o inimigo, ganhando um turno extra.'  
     if(readjustmentEnergy(Caçador.hability3.cost, action)){
-      LifePointsEnemy((life: number) => life - 60 * EnemyWeakening)
+      incTurn(SetTurn)
+      LifePointsEnemy((life : number) => life - 20)
+      setMaldição((maldiacao : number) => maldiacao + 1)
+      AlertsResultsAction(Caçador.hability3.types)
+      toast.success('-' + 20)  
+      toast.success('!!!' + Maldição)  
     }
   }
   function atack4(){
-    action = 'uhre'  
+    action = 'O caçador se esconde nas sombras evitando ataques'  
     if(readjustmentEnergy(Caçador.hability4.cost, action)){
-      LifePointsEnemy((life: number) => life - DamageAtack4 * EnemyWeakening)
+      shadow(true)
     }
     
   }

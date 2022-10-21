@@ -15,6 +15,7 @@ const Game = () => {
 
   const [turn, setTurn] = useState(0)
   const [lifePointsPlayer, setLifePointsPlayer] = useState(1)
+  const [Shadow, setShadow] = useState(false)
   const [lifePointsEnemy, setLifePointsEnemy] = useState(1)
   const [EnergyPointsPlayer, setEnergyPointsPlayer] = useState(0)
   const [EnergyPointsEnemy, setEnergyPointsEnemy] = useState(0)
@@ -22,10 +23,11 @@ const Game = () => {
   const [Winer, setWiner] = useState(false)
   const [nameWiner, setNameWiner] = useState('')
   const [ActionTurn, setActionTurn] = useState('')
+  const [ShowMatilha, setShowMatilha] = useState(false)
 
-  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer, setActionTurn, setalertResultsAction)
+  const { DispatchHabilitiesPlayer } = SelectorHabilitiesPlayer(Player, setTurn, setLifePointsPlayer, setLifePointsEnemy, turn, setEnergyPointsPlayer, EnergyPointsPlayer, setActionTurn, setalertResultsAction, setShowMatilha, lifePointsPlayer, setShadow, Shadow)
 
-  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy, setActionTurn, setalertResultsAction)
+  const { DispatchHabilitiesEnemy } = SelectorHabilitiesEnemy(Enemy, setTurn, setLifePointsEnemy, setLifePointsPlayer, turn, setEnergyPointsEnemy, EnergyPointsEnemy, setActionTurn, setalertResultsAction, setShowMatilha, lifePointsEnemy, setShadow, Shadow)
 
   useEffect(() => {
     setLifePointsPlayer(Player.life)
@@ -50,6 +52,19 @@ const Game = () => {
     }
   }
 
+  function TurnPlayerParOrImppar() {
+    if (MyTurn === 2) {
+      return turn % 2 == 0
+    } else {
+      if (turn > 0) {
+        return turn % 2 != 0
+      }
+      else {
+        return false
+      }
+    }
+  }
+
 
 
 
@@ -61,6 +76,21 @@ const Game = () => {
     }
     else {
       return
+    }
+    if(ShowMatilha && Player.name === 'Lobisomen'){
+      if(TurnPlayerParOrImppar()){
+        setLifePointsEnemy(lifePointsEnemy - 30)
+        setalertResultsAction('damage')
+        toast.success('lobo: -' + 30)
+      }
+    }
+
+    else if(ShowMatilha && Enemy.name === 'Lobisomen'){
+      if(TurnEnemyParOrImppar()){
+        setLifePointsPlayer(lifePointsPlayer - 30)
+        setalertResultsAction('damage')
+        toast.success('-' + 30)
+      }
     }
 
 
@@ -139,18 +169,21 @@ const Game = () => {
     else if (alertResultsAction == 'damage') {
       return 'text-red-500'
     }
+    else if (alertResultsAction == 'special') {
+      return 'text-yellow-500'
+    }
   }
 
   function alertPosition() {
     if (TurnEnemyParOrImppar()) {
-      if (alertResultsAction == 'damage') {
+      if (alertResultsAction == 'damage' || alertResultsAction == 'special') {
         return 'top-right'
       } else {
         return 'top-left'
       }
 
     } else {
-      if (alertResultsAction == 'damage') {
+      if (alertResultsAction == 'damage' || alertResultsAction == 'special') {
         return 'top-left'
       } else {
         return 'top-right'
@@ -172,13 +205,16 @@ const Game = () => {
       <main className='flex justify-between pt-[10rem]'>
         <LayautHero type='Player' energy={EnergyPointsPlayer} name={Player.name} lifePoints={lifePointsPlayer}>
           <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesPlayer} Master={Player} turn={turn} />
-          <Button custom='bg-slate-500' onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
+          <Button custom='bg-slate-500 z-10' onClick={() => RecargeEnergyAndPassTurn(setEnergyPointsPlayer, Player, EnergyPointsPlayer)}
             disabled={TurnEnemyParOrImppar()} >Passar</Button>
-
+           {ShowMatilha && Player.name === 'Lobisomen' && <img className='fixed w-32 mt-28 inverter'
+           src='https://i.pinimg.com/originals/cb/da/40/cbda4089de4eb28561b6fa08435e4170.png' />}
         </LayautHero>
 
         <LayautHero energy={EnergyPointsEnemy} lifePoints={lifePointsEnemy} name={Enemy.name} type='Enemy'>
           <LayautButtons turnEnemy={TurnEnemyParOrImppar} DispatchHabilitiesMaster={DispatchHabilitiesEnemy} Master={Enemy} turn={turn} enemy={true} />
+          {ShowMatilha && Enemy.name === 'Lobisomen' && <img className='fixed w-32 mt-12'
+           src='https://i.pinimg.com/originals/cb/da/40/cbda4089de4eb28561b6fa08435e4170.png' />}
         </LayautHero>
 
       </main>

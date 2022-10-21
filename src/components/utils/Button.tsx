@@ -12,6 +12,7 @@ const Button = ({ children, types, enemy, custom, ...props }: ButtonProps) => {
   const Heal = 'bg-gradient-to-tr from-green-400 to-teal-500'
   const Damage = 'bg-gradient-to-tr from-red-400 to-orange-500'
   const Suport = 'bg-gradient-to-tr from-purple-400 to-violet-500'
+  const Special = 'bg-gradient-to-tr from-yellow-400 to-yellow-500'
 
   const Custom = custom
 
@@ -24,6 +25,9 @@ const Button = ({ children, types, enemy, custom, ...props }: ButtonProps) => {
     }
     if (types == 'suport') {
       return Suport
+    }
+    if (types == 'special') {
+      return Special
     }
   }
 

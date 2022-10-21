@@ -15,6 +15,13 @@
   text-shadow: -1px 1px 1px rgba(250,143,24,30.35);
 }
 
+.inverter {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
 @keyframes shadow {
   10%{text-shadow: -4px 4px 1px rgba(0,0,0,30.35)}
   70%{text-shadow: 4px 4px 1px rgba(0,0,0,30.35)}
