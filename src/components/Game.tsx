@@ -9,6 +9,10 @@ import Button from './utils/Button'
 import LayautButtons from './utils/LayautButtons'
 import LayautHero from './utils/LayautHero'
 import 'react-toastify/dist/ReactToastify.css'
+import TurnPlayerOrEnemy from './functions/functionsOfGame/TurnPlayerOrEnemy'
+import EnemyInteligenseFunction from './functions/functionsOfGame/EnemyInteligence'
+import ToastFunctions from './functions/functionsOfGame/ToastFunctions'
+import TurnFunctions from './functions/functionsOfGame/TurnFunctions'
 
 const Game = () => {
 
@@ -39,71 +43,21 @@ const Game = () => {
     }
   }, [])
 
-  function TurnEnemyParOrImppar() {
-    if (MyTurn === 1) {
-      return turn % 2 != 0
-    } else {
-      if (turn > 0) {
-        return turn % 2 == 0
-      }
-      else {
-        return false
-      }
-    }
-  }
+  const {TurnEnemyParOrImppar, TurnPlayerParOrImppar} = TurnPlayerOrEnemy(MyTurn, turn)
 
-  function TurnPlayerParOrImppar() {
-    if (MyTurn === 2) {
-      return turn % 2 == 0
-    } else {
-      if (turn > 0) {
-        return turn % 2 != 0
-      }
-      else {
-        return false
-      }
-    }
-  }
+  const {EnemyInteligense} = EnemyInteligenseFunction(Enemy, setEnergyPointsEnemy, RecargeEnergyAndPassTurn, EnergyPointsEnemy, DispatchHabilitiesEnemy)
+
+  const {alertPosition, modAlert} = ToastFunctions(alertResultsAction, TurnEnemyParOrImppar)
+
+  const {EnergyTurnRecharge, actionEnemy, ifOnMatilha} = TurnFunctions(TurnEnemyParOrImppar, lifePointsEnemy, EnemyInteligense, ShowMatilha, Player, TurnPlayerParOrImppar, setLifePointsEnemy, setalertResultsAction, Enemy, setLifePointsPlayer, lifePointsPlayer, EnergyPointsPlayer, setEnergyPointsPlayer, EnergyPointsEnemy, setEnergyPointsEnemy)
 
 
 
 
   useEffect(() => {
-    if (TurnEnemyParOrImppar() && lifePointsEnemy >= 0) {
-      setTimeout(() => {
-        EnemyInteligense()
-      }, 2000);
-    }
-    else {
-      return
-    }
-    if(ShowMatilha && Player.name === 'Lobisomen'){
-      if(TurnPlayerParOrImppar()){
-        setLifePointsEnemy(lifePointsEnemy - 30)
-        setalertResultsAction('damage')
-        toast.success('lobo: -' + 30)
-      }
-    }
-
-    else if(ShowMatilha && Enemy.name === 'Lobisomen'){
-      if(TurnEnemyParOrImppar()){
-        setLifePointsPlayer(lifePointsPlayer - 30)
-        setalertResultsAction('damage')
-        toast.success('-' + 30)
-      }
-    }
-
-
-    if ((EnergyPointsPlayer + 2) > Player.energy) {
-      setEnergyPointsPlayer(Player.energy)
-    } else {
-      setEnergyPointsPlayer((prevEnergy: number) => prevEnergy + 1)
-    }
-    if ((EnergyPointsEnemy + 2) > Enemy.energy) {
-      setEnergyPointsEnemy(Enemy.energy)
-    } else {
-      setEnergyPointsEnemy((prevEnergy: number) => prevEnergy + 1)
-    }
+    actionEnemy()
+    ifOnMatilha()
+    EnergyTurnRecharge()
 
   }, [turn])
 
@@ -131,69 +85,6 @@ const Game = () => {
       setEnergy((prevEnergy: number) => prevEnergy + (Master.energy / 2))
     }
   }
-
-  function EnemyInteligense() {
-    const ArrayCost = new Array()
-    ArrayCost.push(Enemy.hability1.cost, Enemy.hability2.cost, Enemy.hability3.cost, Enemy.hability4.cost)
-    const NewArrayCost = ArrayCost.filter(hability => hability < EnergyPointsEnemy)
-
-    const random = getRandomArbitrary(0, NewArrayCost.length)
-
-    if (EnergyPointsEnemy < (Enemy.energy / 3)) {
-      RecargeEnergyAndPassTurn(setEnergyPointsEnemy, Enemy, EnergyPointsEnemy)
-    }
-
-    else if (NewArrayCost[random] === Enemy.hability1.cost) {
-      DispatchHabilitiesEnemy()?.hability1()
-    }
-    else if (NewArrayCost[random] === Enemy.hability2.cost) {
-      DispatchHabilitiesEnemy()?.hability2()
-    }
-    else if (NewArrayCost[random] === Enemy.hability3.cost) {
-      DispatchHabilitiesEnemy()?.hability3()
-    }
-    else if (NewArrayCost[random] === Enemy.hability4.cost) {
-      DispatchHabilitiesEnemy()?.hability4()
-    } else {
-      RecargeEnergyAndPassTurn(setEnergyPointsEnemy, Enemy, EnergyPointsEnemy)
-    }
-
-  }
-  function modAlert() {
-    if (alertResultsAction == 'heal') {
-      return 'text-green-500'
-    }
-    else if (alertResultsAction == 'suport') {
-      return 'text-purple-500'
-    }
-    else if (alertResultsAction == 'damage') {
-      return 'text-red-500'
-    }
-    else if (alertResultsAction == 'special') {
-      return 'text-yellow-500'
-    }
-  }
-
-  function alertPosition() {
-    if (TurnEnemyParOrImppar()) {
-      if (alertResultsAction == 'damage' || alertResultsAction == 'special') {
-        return 'top-right'
-      } else {
-        return 'top-left'
-      }
-
-    } else {
-      if (alertResultsAction == 'damage' || alertResultsAction == 'special') {
-        return 'top-left'
-      } else {
-        return 'top-right'
-      }
-    }
-  }
-  console.log(alertResultsAction)
-
-
-
 
   return (
     <div className='h-screen w-full bg-gradient-to-r from-slate-100 to-zinc-100'>
