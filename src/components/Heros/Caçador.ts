@@ -10,10 +10,10 @@ export const Caçador = {
   name: 'Caçador',
   life: 300,
   energy: 15,
-  hability1: {name :'Espada amaldiçoada' , cost: 4, types: 'special'},
-  hability2:  {name :'Poção de cura' , cost: 7, types: 'heal'},
-  hability3:  {name :'Armadilha amaldiçoada' , cost: 6, types: 'special'}, 
-  hability4:  {name :'Ocultação nas sombras' , cost: 5, types: 'suport'}
+  hability1: {name :'Espada amaldiçoada' , cost: 4, types: 'special', desc: 'Gasta 4 de energia para desferirir uma espadada que amaldiçoa o inimigo e causa 40 de dano,(se o nivel de maldição for maior que 2 desfere 150 de dano)'},
+  hability2:  {name :'Poção de cura' , cost: 7, types: 'heal', desc: 'Gasta 7 de energia para tomar uma poção de cura que lhe dá 80 de vida'},
+  hability3:  {name :'Armadilha amaldiçoada' , cost: 6, types: 'special', desc: 'Gasta 6 de energia para gerar uma armadilha magica que amaldiçoa e atrasa o inimigo, você ganha um turno extra e causando 20 de dano'}, 
+  hability4:  {name :'Ocultação nas sombras' , cost: 5, types: 'suport', desc: 'Gasta 5 de energia para usar uma magia contornando o inimigo com fumaça e fazendo com que ele não te acerte na roxima vez'}
 }
 
 

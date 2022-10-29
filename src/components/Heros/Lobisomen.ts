@@ -8,10 +8,10 @@ export const Lobisomen = {
   name: 'Lobisomen',
   life: 400,
   energy: 20,
-  hability1: {name :'Uivo estrondoso' , cost: 6, types: 'suport'},
-  hability2:  {name :'Mordida' , cost: 4, types: 'damage'},
-  hability3:  {name :'Golpe de garras' , cost: 5, types: 'damage'}, 
-  hability4:  {name :'Convocar matilha' , cost: 15, types: 'suport'}
+  hability1: {name :'Uivo estrondoso' , cost: 6, types: 'suport', desc: 'Gasta 6 de energia para fazer um uivo estrondoso que assusta o inimigo e dobra o dano do seu proximo ataque'},
+  hability2:  {name :'Mordida' , cost: 4, types: 'damage', desc: 'Gasta 4 de energia para causar 40 de dano e te cura em 10'},
+  hability3:  {name :'Golpe de garras' , cost: 5, types: 'damage', desc: 'Gasta 5 de energia para dar um poderozo golpe de garras que causa 120 de dano'}, 
+  hability4:  {name :'Convocar matilha' , cost: 15, types: 'suport', desc: 'Gasta 15 de energia para invocar uma matilha de lobos que causa 40 de dano por turno ao inimigo'}
 }
 
 export const StatsLobisomen = (LifePointsEnemy: any, SetTurn: any, LifePointsMy: any,  setMyEnergy: any, MyEnergy: number, setActionTurn: any, AlertsResultsAction: any, setShowMatilha: any,setShadow: any, shadow: boolean) =>{

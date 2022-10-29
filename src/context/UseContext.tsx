@@ -8,6 +8,7 @@ export type HeroHability = {
   name: string
   cost: number
   types: string
+  desc: string
 }
 
 export type Hero = {
@@ -55,20 +56,20 @@ const Initial = {
     name: '',
     life: 1,
     energy: 0,
-    hability1: {name: '', cost: 0, types: ''},
-    hability2: {name: '', cost: 0, types: ''},
-    hability3: {name: '', cost: 0, types: ''},
-    hability4: {name: '', cost: 0, types: ''},
+    hability1: {name: '', cost: 0, types: '', desc: ''},
+    hability2: {name: '', cost: 0, types: '', desc: ''},
+    hability3: {name: '', cost: 0, types: '', desc: ''},
+    hability4: {name: '', cost: 0, types: '', desc: ''},
   },
   Enemy: {
     avatar: '',
     name: '',
     life: 1,
     energy: 0,
-    hability1: {name: '', cost: 0, types: ''},
-    hability2: {name: '', cost: 0, types: ''},
-    hability3: {name: '', cost: 0, types: ''},
-    hability4: {name: '', cost: 0, types: ''},
+    hability1: {name: '', cost: 0, types: '', desc: ''},
+    hability2: {name: '', cost: 0, types: '', desc: ''},
+    hability3: {name: '', cost: 0, types: '', desc: ''},
+    hability4: {name: '', cost: 0, types: '', desc: ''},
   },
   setEnemy: (player: Hero) => { },
   setPlayer: (player: Hero) => { }
